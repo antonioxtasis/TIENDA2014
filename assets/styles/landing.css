@@ -1,0 +1,19 @@
+.jumbotron{
+	height: 400px;
+}
+.jumbotron h1{
+	color: white;
+	text-shadow: #000 1px 1px 3px;
+	font-size: 50px;
+	line-height: 50px;
+}
+.image-src {
+	background-position: center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.item{
+	padding-bottom: 30px;
+}

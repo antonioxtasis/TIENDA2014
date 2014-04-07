@@ -1,0 +1,30 @@
+input[type='text']{
+	margin-top: 5px;
+}
+input[type='password']{
+	margin-top: 5px;
+}
+input[type='submit']{
+	margin-top: 5px;
+}
+#principal-username{
+	color: #29AC10;
+	font-style: bold;
+}
+.navbar-inverse{
+	-moz-box-shadow: 0px 2px 3px #362E30;
+	-webkit-box-shadow: 0px 2px 3px #362E30;
+	-box-shadow: 0px 2px 3px #362E30;
+}
+#main {
+	margin: 30px auto;
+	float: none;
+	padding: 15px;
+}
+input[type='text']{
+	height: 40px;
+}
+
+input[type='password']{
+	height: 40px;
+}

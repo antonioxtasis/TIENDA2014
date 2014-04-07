@@ -1,0 +1,2 @@
+# OnlineStore
+### a Sails application

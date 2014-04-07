@@ -1,0 +1,64 @@
+<!-- <table class='table'>
+	<tr>
+		<th></th>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Price</th>
+		<th>Active</th>
+		<th>Quantity</th>
+		<th>Image</th>
+		<th></th>
+		<th></th>
+		<th></th>
+	</tr>
+
+
+	<% _.each(articles, function(article) { %>
+	<tr data-id="<%= article.id %>" data-model="article">
+		<td><%= article.id %></td>
+		<td><%= article.name %></td>
+		<td><%= article.price %></td>
+		<td><%= article.active %></td>
+		<td><%= article.quantity %></td>
+		<td><%= article.imageURL %></td>
+		
+		<td><a href="/article/show/<%= article.id %>" class="btn btn-sm btn-primary">Show</a></td>
+		<td><a href="/article/edit/<%= article.id %>" class="btn btn-sm btn-warning">Edit</a></td>
+
+		<td><form action="/article/destroy/<%= article.id %>" method="POST">
+			<input type="hidden" name="_method" value="delete"/>
+			<input type="submit" class="btn btn-sm btn-danger" value="Delete"/>
+			<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+		</form></td>
+	</tr> 
+
+	<% }) %>
+</table> -->
+
+<div class="container">
+	<div class="jumbotron">
+		<div class="row">
+		<% _.each(articles, function(article) { %>
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="<%= article.imageURL %>" alt="<%= article.imageURL %>">
+		      <div class="caption">
+		        <h3><%= article.name %></h3>
+		        <p><%= article.id %>...<%= article.price %></p>
+
+		        <p>
+		        	<a href="/article/show/<%= article.id %>" class="btn btn-sm btn-primary">Show</a>
+		        	<a href="/article/edit/<%= article.id %>" class="btn btn-sm btn-warning">Edit</a>
+		        	<form action="/article/destroy/<%= article.id %>" method="POST">
+						<input type="hidden" name="_method" value="delete"/>
+						<input type="submit" class="btn btn-sm btn-danger" value="Delete"/>
+						<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+					</form>
+		        </p>
+		      </div>
+		    </div>
+		  </div>
+		<% }) %>
+		</div>
+	</div>
+</div>
