@@ -30,7 +30,7 @@ module.exports = {
       email: req.param('email'),
       encryptedPassword: req.param('encryptedPassword'),
       confirmation: req.param('confirmation'),
-      admin: req.param('1')
+      admin: 1
     }
 
     console.log(req.param('encryptedPassword'));
