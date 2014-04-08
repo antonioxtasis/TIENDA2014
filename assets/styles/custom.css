@@ -5,7 +5,7 @@ input[type='password']{
 	margin-top: 5px;
 }
 input[type='submit']{
-	margin-top: 5px;
+	/*margin-top: 5px;*/
 }
 #principal-username{
 	color: #29AC10;
