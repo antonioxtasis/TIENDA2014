@@ -24,6 +24,7 @@ module.exports = {
 
   create: function(req, res, next) {
 
+    console.log(req);
     var userObj = {
       name: req.param('name'),
       title: req.param('title'),
@@ -33,7 +34,6 @@ module.exports = {
       admin: 1
     }
 
-    console.log(req.param('encryptedPassword'));
     // Create a User with the params sent from 
     // the sign-up form --> new.ejs
     User.create(userObj, function userCreated(err, user) {

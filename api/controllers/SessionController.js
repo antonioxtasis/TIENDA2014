@@ -15,7 +15,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-//var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -67,11 +67,8 @@ module.exports = {
 				return;
 			}
 
-			console.log(req.param('password'));
-			console.log(user.encryptedPassword);
 			// Compare password from the form params to the encrypted password of the user found.
-			if(req.param('password') == user.encryptedPassword){
-			/*bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, valid) {
+			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, valid) {
 				if (err) return next(err);
 
 				// If the password from the form doesn't match the password from the database...
@@ -86,8 +83,7 @@ module.exports = {
 					res.redirect('/session/new');
 					return;
 				}
-*/				
-				console.log("entra");
+
 				// Log user in
 				req.session.authenticated = true;
 				req.session.User = user;
@@ -115,7 +111,7 @@ module.exports = {
 					//Redirect to their profile page (e.g. /views/user/show.ejs)
 					res.redirect('/user/show/' + user.id);
 				});
-			}//);
+			});
 		});
 	},
 

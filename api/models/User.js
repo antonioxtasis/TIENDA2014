@@ -5,6 +5,7 @@
  * @description :: A short summary of how this model works and what it represents.
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
+var bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -63,21 +64,16 @@ module.exports = {
       }
     }
      next();
-  }/*,
+  },
 
   beforeCreate: function (values, next) {
 
-    // This checks to make sure the password and password confirmation match before creating record
-    if (!values.password || values.password != values.confirmation) {
-      return next({err: ["Password doesn't match password confirmation."]});
-    }
-
-    require('bcrypt').hash(values.password, 10, function passwordEncrypted(err, encryptedPassword) {
+    require('bcrypt').hash(values.encryptedPassword, 5, function passwordEncrypted(err, encryptedPassword) {
       if (err) return next(err);
       values.encryptedPassword = encryptedPassword;
-      // values.online= true;
+      values.online = true;
       next();
     });
-  }*/
+  }
 
 };
