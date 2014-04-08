@@ -15,7 +15,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
 
@@ -25,8 +25,6 @@ module.exports = {
 
 	create: function(req, res, next) {
 
-		console.log(req.param('email'));
-		console.log(req.param('password'));
 		// Check for email and password in params sent via the form, if none
 		// redirect the browser back to the sign-in form.
 		if (!req.param('email') || !req.param('password')) {
@@ -68,11 +66,14 @@ module.exports = {
 			}
 
 			// Compare password from the form params to the encrypted password of the user found.
-			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, valid) {
+			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, results) { 
 				if (err) return next(err);
 
+				console.log(err);
+				console.log(results);
 				// If the password from the form doesn't match the password from the database...
-				if (!valid) {
+				if (!results) {
+					console.log("entra");
 					var usernamePasswordMismatchError = [{
 						name: 'usernamePasswordMismatch',
 						message: 'Invalid username and password combination.'

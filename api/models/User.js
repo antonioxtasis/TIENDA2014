@@ -5,7 +5,7 @@
  * @description :: A short summary of how this model works and what it represents.
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
 
@@ -67,13 +67,10 @@ module.exports = {
   },
 
   beforeCreate: function (values, next) {
-
-    require('bcrypt').hash(values.encryptedPassword, 5, function passwordEncrypted(err, encryptedPassword) {
-      if (err) return next(err);
-      values.encryptedPassword = encryptedPassword;
-      values.online = true;
-      next();
-    });
+    var hash = bcrypt.hashSync(values.encryptedPassword);
+    values.encryptedPassword = hash;
+    values.online = true;
+    next();
   }
 
 };

@@ -24,7 +24,6 @@ module.exports = {
 
   create: function(req, res, next) {
 
-    console.log(req);
     var userObj = {
       name: req.param('name'),
       title: req.param('title'),
