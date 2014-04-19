@@ -16,16 +16,17 @@ module.exports.policies = {
 
   	// Default policy for all controllers and actions
 	// (`true` allows public access) 
-	'*': "flash",
+//	'*': "flash",
 
 	user: {
-		'new': "flash",
+		index: "admin",
+//		'new': "flash",
 		//subscribe: ["flash", "authenticated"],
-		create: "flash",
-		show: "userCanSeeProfile",
+//		create: "flash",
+/*		show: "userCanSeeProfile",
 		edit: "userCanSeeProfile",
 		update: "userCanSeeProfile",
-		'*': "admin"
+		'*': "admin"*/
 	}
 
   /*

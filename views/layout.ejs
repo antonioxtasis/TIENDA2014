@@ -23,11 +23,11 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <% if (session.authenticated) { %>
-            <li class="active"><a id="principal-username" href="/user/show/<%= session.User.id %>">Hello <%= session.User.name %></a> </li>
+            <li class="active"><a id="principal-username" href="/user/show/<%= session.User.id %>"><b>Hello <%= session.User.name %></b></a> </li>
             <% } %>
             <% if (session.authenticated && session.User.admin) { %>
-            <li><a href="/user">User Administration</a></li>
-            <li><a href="#">Placeholder2</a></li>
+            <li><a href="/user"><b>User Administration</b></a></li>
+            <!-- <li><a href="#">Placeholder2</a></li> -->
             <% } %>
           </ul>
           <div class="navbar-right">

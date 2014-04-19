@@ -30,7 +30,7 @@ module.exports = {
       email: req.param('email'),
       encryptedPassword: req.param('encryptedPassword'),
       confirmation: req.param('confirmation'),
-      admin: 1
+      admin: 0
     }
 
     // Create a User with the params sent from 
@@ -42,9 +42,9 @@ module.exports = {
 
       if (err) {
         console.log(err);
-        req.session.flash = {
+        /*req.session.flash = {
           err: err
-        }
+        }*/
 
         // If error redirect back to sign-up page
         return res.redirect('/user/new');

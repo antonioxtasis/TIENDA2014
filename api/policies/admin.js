@@ -11,10 +11,12 @@ module.exports = function (req, res, ok) {
   // User is not allowed
   else {
   	var requireAdminError = [{name: 'requireAdminError', message: 'You must be an admin.'}]
-		req.session.flash = {
+/*		req.session.flash = {
 			err: requireAdminError
-		}
-    res.redirect('/session/new');
+		}*/
+//    res.redirect('/session/new');
+    res.redirect('/');
+
     return;
   }
 };

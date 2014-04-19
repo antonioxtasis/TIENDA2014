@@ -4,15 +4,7 @@
 	<div id="main" class="col-md-8">
 		<form action="/user/create" method="POST" id="form-sign" class="form-signin">
 			<h2 class="form-signing-heading">Create an account</h2>
-
-			<% if(flash && flash.err){ %>
-				<ul class="alert alert-success">
-				<% Object.keys(flash.err).forEach(function(error){ %>
-					<li><%- JSON.stringify(flash.err[error]) %></li>
-				<% }) %>
-				</ul>
-			<% } %>
-
+			
 			<div class="control-group">
 				<input type="text" class="form-control" placeholder="name" name="name">
 			</div>
@@ -23,7 +15,6 @@
 				<input type="text" class="form-control" placeholder="email" name="email">
 			</div>
 			<div class="control-group">
-				<!-- <input type="password" class="form-control" placeholder="password" name="password"> -->
 				<input type="password" class="form-control" placeholder="password" name="encryptedPassword">
 			</div>
 			<div class="control-group">

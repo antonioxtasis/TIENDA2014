@@ -1,5 +1,5 @@
 /**
- * articleController
+ * HomeController
  *
  * @module      :: Controller
  * @description :: A set of functions called `actions`.
