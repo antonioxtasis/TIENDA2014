@@ -1,0 +1,22 @@
+<div class="container">
+	<div id="main" class="col-md-8">
+		<form action="/article/create" method="POST" id="form-sign" class="form-signin">
+			<h2 class="form-signing-heading">New Article</h2>
+			
+			<input type="text" class="form-control" placeholder="name" name="name">
+			<input type="text" class="form-control" placeholder="price" name="price">
+			
+			<select class="form-control" name="active">
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+			</select>
+
+			<input type="text" class="form-control" placeholder="quantity" name="quantity">
+			<input type="text" class="form-control" placeholder="imageURL" name="imageURL">
+
+			<br>
+			<input type="submit" class="btn btn-lg btn-block btn-primary" Value="Add article"/>
+			<input type="hidden" name="_csrf" value="<%= _csrf %>"/>
+		</form>
+	</div>
+</div>

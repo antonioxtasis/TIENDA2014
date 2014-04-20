@@ -27,6 +27,10 @@ module.exports.policies = {
 		edit: "userCanSeeProfile",
 		update: "userCanSeeProfile",
 		'*': "admin"*/
+	},
+
+	article: {
+		index: "admin"
 	}
 
   /*

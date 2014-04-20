@@ -18,11 +18,10 @@
 module.exports = {
 
   index: function(req, res, next){
-    
     // get an array of all articlees in the article collection (e.g. table)
     Article.find( function foundArticles(err, articles){
       if (err) return next(err);
-    // pass the array to the /views/index.ejs page
+      // pass the array to the /views/index.ejs page
       res.view({
         articles: articles
       });

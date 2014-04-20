@@ -1,18 +1,23 @@
-<form action="/user/update/<%= user.id %>" method="POST" class="form-signin">
-	<h2> Hey, you're editing a user... </h2>
+<div class="container">
+	<div id="main" class="col-md-8">
+		<form action="/user/update/<%= user.id %>" method="POST" class="form-signin">
+			<h2> Hey, you're editing a user... </h2>
 
-	<input value="<%= user.name %>" name="name" type="text" class="form-control"/>
-	<input value="<%= user.title %>" name="title" type="text" class="form-control"/>
-	<input value="<%= user.email %>" name="email" type="text" class="form-control"/>
-	<% if (session.authenticated && session.User.admin) { %>
-		<% if (user.admin) { %>
-			<input type="hidden" name="admin" value="unchecked">
-			<label class="checkbox"><input type="checkbox" name="admin" checked> Admin</label>
-		<% } else { %>
-			<input type="hidden" name="admin" value="unchecked">
-			<label class="checkbox"><input type="checkbox" name="admin"> Admin</label>
-		<% } %> 
-	<% } %> 
-	<input type="submit" value="Proceed" class="btn btn-lg btn-primary btn-block"/>
-	<input type="hidden" name="_csrf" value="<%= _csrf %>" />
-</form>
+			<input value="<%= user.name %>" name="name" type="text" class="form-control"/>
+			<input value="<%= user.title %>" name="title" type="text" class="form-control"/>
+			<input value="<%= user.email %>" name="email" type="text" class="form-control"/>
+			<% if (session.authenticated && session.User.admin) { %>
+				<% if (user.admin) { %>
+					<input type="hidden" name="admin" value="unchecked">
+					<label class="checkbox"><input type="checkbox" name="admin" checked> Admin</label>
+				<% } else { %>
+					<input type="hidden" name="admin" value="unchecked">
+					<label class="checkbox"><input type="checkbox" name="admin"> Admin</label>
+				<% } %> 
+			<% } %>
+			<br>
+			<input type="submit" value="Proceed" class="btn btn-lg btn-primary btn-block"/>
+			<input type="hidden" name="_csrf" value="<%= _csrf %>" />
+		</form>
+	</div>
+</div>

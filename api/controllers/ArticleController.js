@@ -1,5 +1,5 @@
 /**
- * articleController
+ * ArticleController
  *
  * @module      :: Controller
  * @description :: A set of functions called `actions`.
@@ -17,6 +17,10 @@
 
 module.exports = {
 
+  'new': function (req, res){
+    res.view();
+  },
+
   index: function(req, res, next){
     
     // get an array of all articlees in the article collection (e.g. table)
@@ -27,6 +31,36 @@ module.exports = {
         articles: articles
       });
     });
+  }, 
+
+  create: function(req, res, next) {
+
+    var articleObj = {
+      name: req.param('name'),
+      price: req.param('price'),
+      active: req.param('active'),
+      quantity: req.param('quantity'),
+      imageURL: req.param('imageURL')
+    }
+
+    // Create a Article with the params sent from the --> new.ejs
+    Article.create(articleObj, function articleCreated(err, article) {
+
+      if (err) {
+        console.log(err);
+        // If error redirect back
+        //return res.redirect('/article/new');
+      }
+
+      article.save(function(err, article) {
+        if (err)
+          return next(err);
+
+        res.redirect('/article/');
+
+      });
+    });
+
   }
 
 };
