@@ -34,14 +34,22 @@ module.exports = {
   }, 
 
   getProducts: function(req, res, next){
-    
-    // get an array of all articlees in the article collection (e.g. table)
+
+    /*get an array of all articlees in the article collection (e.g. table)
     Article.find( function foundArticles(err, articles){
       if (err) return next(err);
       console.log("entra a productos");
     // pass the array to the /views/index.ejs page
       res.send(articles);
+    });*/
+
+    
+    //Custom Query
+    Article.query('SELECT * FROM article where price=100', function(err, articles) {
+      if (err) return next(err);
+      res.send(articles);
     });
+
   }, 
 
   create: function(req, res, next) {
