@@ -32,3 +32,18 @@
    <% }) %>
   </div>
 </div>
+
+<script>
+  $.ajax({
+    type:"GET",
+    dataType: 'json',
+    url:'/article/getProducts',
+    data:{},
+    success: function(data){
+      for (var i=0;i<data.length;i++) { 
+      console.log(data);
+      $("#columns").append("<div class=pin id=article_"+data[i].id+"><img src="+data[i].imageURL+"></div>");
+      }
+    }
+  });
+</script>
