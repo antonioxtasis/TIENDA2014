@@ -42,3 +42,9 @@ margin-top: 5px;
 .align-center {
 	text-align: center;
 }
+.form-delete {
+	display: -webkit-inline-box;
+}
+.add-to-cart{
+	background-color: #9BFFA7;
+}

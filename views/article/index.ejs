@@ -3,7 +3,7 @@
 
 <div class="container">
   <div class="align-center">
-    <br><br>
+    <br>
     <a href="/article/new/" class="btn btn-info">Add new</a>
   </div>
 </div>
@@ -14,16 +14,11 @@
     <div class="pin" id="article_<%= article.id %>">
         <img src="<%= article.imageURL %>" alt="<%= article.imageURL %>">
         <h3><%= article.name %></h3>
-        <p> Price: <b class="money">$<%= article.price %></b></p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          Sed feugiat consectetur pellentesque. Nam ac elit risus, 
-          ac blandit dui. Duis rutrum porta tortor ut convallis.
-          Duis rutrum porta tortor ut convallis.
-        </p>
+        <p>Price: <b class="money">$<%= article.price %></b></p>
+        <p><%= article.description %></p>
         <a href="/article/show/<%= article.id %>" class="btn btn-sm btn-primary">Show</a>
         <a href="/article/edit/<%= article.id %>" class="btn btn-sm btn-warning">Edit</a>
-        <form action="/article/destroy/<%= article.id %>" method="POST">
+        <form class="form-delete" action="/article/destroy/<%= article.id %>" method="POST">
           <input type="hidden" name="_method" value="delete"/>
           <input type="submit" class="btn btn-sm btn-danger" value="Delete"/>
           <input type="hidden" name="_csrf" value="<%= _csrf %>" />
@@ -32,18 +27,3 @@
    <% }) %>
   </div>
 </div>
-
-<script>
-  $.ajax({
-    type:"GET",
-    dataType: 'json',
-    url:'/article/getProducts',
-    data:{},
-    success: function(data){
-      for (var i=0;i<data.length;i++) { 
-      console.log(data);
-      $("#columns").append("<div class=pin id=article_"+data[i].id+"><img src="+data[i].imageURL+"></div>");
-      }
-    }
-  });
-</script>
