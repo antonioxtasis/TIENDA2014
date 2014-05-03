@@ -38,7 +38,7 @@
 					<tr>
 						<td></td>
 						<td>First Name: </td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+						<td><input id="user-name" class="form-control" style= "width: 270px !important;"type="text" /></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -73,7 +73,7 @@
 					<tr>
 						<td></td>
 						<td>E-mail: 	</td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+						<td><input id="user-email" class="form-control" style= "width: 270px !important;"type="text" /></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -96,97 +96,97 @@
 	
 	//Get article list of the JSON saved in LocalStorage
 
-	//Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
-	var restoredData = JSON.parse(localStorage.getItem('data'));
+	if(localStorage.getItem('data')!=null && localStorage.getItem('data')!= ""){
 
-	//Fill the Table
-	for (var i=0; i < restoredData.articles.length; i++) {
-		if(restoredData.articles[i] != null && restoredData.articles[i] != ""){
-			$("#table-body").append(
-	       		  "<tr id='row_"+i+"'>"
-	       		+ "<td class=id>" + restoredData.articles[i].id + "</td>"
-	       		+ "<td><b>" + restoredData.articles[i].name + "<b></td>"
-	       		+ "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
-	       		+ "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
-	       		+ "<td>"
-	       		+ 	"<img id='img_less_"+restoredData.articles[i].id+"' src='/images/less.png' style='cursor: pointer;' onclick='lessFunction(this)'>"
-	       		+ 	"<img id='img_more_"+restoredData.articles[i].id+"' src='/images/more.png' style='cursor: pointer;' onclick='moreFunction(this)'>"
-	       		+ "</td>"
-	       		+ "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
-	       		+ "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
-	       		+ "<tr>"
-	   		);
-		}       
- 	}
+			//Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
+			var restoredData = JSON.parse(localStorage.getItem('data'));
 
- 	/***************  Functions ******************/ 	
-	function calculateTotal(){
-		var total = 0.00;
-		var subtotal = 0.00;
 
-		$("#table-body  tr").each(function(){
-			sub =  $(this).find(".subtotal").html();
-			subtotal = parseFloat(sub);
-			if(sub!=undefined){
-				total += subtotal;
-			}				
-		});
-		$("#total").html(total);
+			//Fill the Table
+			for (var i=0; i < restoredData.articles.length; i++) {
+				if(restoredData.articles[i] != null && restoredData.articles[i] != ""){
+					$("#table-body").append(
+			       		  "<tr id='row_"+i+"'>"
+			       		+ "<td class=id>" + restoredData.articles[i].id + "</td>"
+			       		+ "<td><b>" + restoredData.articles[i].name + "<b></td>"
+			       		+ "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
+			       		+ "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
+			       		+ "<td>"
+			       		+ 	"<img id='img_less_"+restoredData.articles[i].id+"' src='/images/less.png' style='cursor: pointer;' onclick='lessFunction(this)'>"
+			       		+ 	"<img id='img_more_"+restoredData.articles[i].id+"' src='/images/more.png' style='cursor: pointer;' onclick='moreFunction(this)'>"
+			       		+ "</td>"
+			       		+ "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
+			       		+ "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
+			       		+ "<tr>"
+			   		);
+				}       
+		 	}
+
+		 	/***************  Functions ******************/ 	
+			function calculateTotal(){
+				var total = 0.00;
+				var subtotal = 0.00;
+
+				$("#table-body  tr").each(function(){
+					sub =  $(this).find(".subtotal").html();
+					subtotal = parseFloat(sub);
+					if(sub!=undefined){
+						total += subtotal;
+					}				
+				});
+				$("#total").html(total);
+			}
+
+			function lessFunction(elemento){
+				var id = elemento.id;
+
+				//Get the row index; #optional
+				var row = $("#" + id).parent().parent().attr("id");
+
+				//Get the quantity
+				var actual_quantity = $("#" + row).find(".quantity").html();
+
+				if(parseFloat(actual_quantity) > 1){
+					//Parse
+					var resultado = parseFloat(actual_quantity) - 1;
+					//Show new quantity
+					$("#" + row).find(".quantity").html(resultado);
+					//Show new subtotal
+					var actual_price = $("#" + row).find(".price").html();
+					var subtotal = resultado * parseInt(actual_price);
+					$("#" + row).find(".subtotal").html(subtotal);
+
+					//Total refresh
+					calculateTotal();
+				}		
+			}
+
+			function moreFunction(elemento){		
+
+				var id = elemento.id;
+
+				//Get the row index; #optional
+				var row = $("#" + id).parent().parent().attr("id");
+
+				//Get the quantity
+				var actual_quantity = $("#" + row).find(".quantity").html();
+				//Parse
+				var resultado = parseFloat(actual_quantity) + 1;
+				//Show new quantity
+				$("#" + row).find(".quantity").html(resultado);
+				//Show new subtotal
+				var actual_price = $("#" + row).find(".price").html();
+				var subtotal = resultado * parseInt(actual_price);
+				$("#" + row).find(".subtotal").html(subtotal);
+
+				//Total refresh
+				calculateTotal();
+			}
+
+
+			//Trigger the Function
+		 	calculateTotal();
 	}
-
-	function lessFunction(elemento){
-		var id = elemento.id;
-
-		//Get the row index; #optional
-		var row = $("#" + id).parent().parent().attr("id");
-
-		//Get the quantity
-		var actual_quantity = $("#" + row).find(".quantity").html();
-
-		if(parseFloat(actual_quantity) > 1){
-			//Parse
-			var resultado = parseFloat(actual_quantity) - 1;
-			//Show new quantity
-			$("#" + row).find(".quantity").html(resultado);
-			//Show new subtotal
-			var actual_price = $("#" + row).find(".price").html();
-			var subtotal = resultado * parseInt(actual_price);
-			$("#" + row).find(".subtotal").html(subtotal);
-
-			//Total refresh
-			calculateTotal();
-		}		
-	}
-
-	function moreFunction(elemento){		
-
-		var id = elemento.id;
-
-		//Get the row index; #optional
-		var row = $("#" + id).parent().parent().attr("id");
-
-		//Get the quantity
-		var actual_quantity = $("#" + row).find(".quantity").html();
-		//Parse
-		var resultado = parseFloat(actual_quantity) + 1;
-		//Show new quantity
-		$("#" + row).find(".quantity").html(resultado);
-		//Show new subtotal
-		var actual_price = $("#" + row).find(".price").html();
-		var subtotal = resultado * parseInt(actual_price);
-		$("#" + row).find(".subtotal").html(subtotal);
-
-		//Total refresh
-		calculateTotal();
-	}
-
-
-
-	//Trigger the Function
- 	calculateTotal();
-
-
-
 
  	/***************  Events ******************/
 	function removeItem(elem){
@@ -206,8 +206,6 @@
 		//Reload the page
 		location.reload();
 	}
-
-
      
 	$("#btn-step1").click(function(){
 		var articlesToBuy = {
@@ -236,13 +234,32 @@
 		$('#myTab li:eq(1) a').tab('show');
 	});
 
-	/*
-	*
-	* 									LLAMADAS AJAX
-	*
-	*/
 
-	$(document).ready(function(){        
+	/************************************************************************************/	
+	/*****************************  LLAMADAS AJAX ***************************************/	
+	/************************************************************************************/
+	
+	$(document).ready(function(){
+
+		var userId = 3;
+
+	/*************************** Get User Data *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getUserData?userId=' + <%= session.User.id %>,
+       data: {},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) {
+         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
+         		$("#user-name").val(data[i].name);
+         		$("#user-email").val(data[i].email);
+         	}         	           
+         }
+       }
+      });      
       //*************************** Get list of Countries *****************/
       $.ajax({
        type:"GET",

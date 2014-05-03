@@ -44,6 +44,14 @@ module.exports = {
       if (err) return next(err);
       res.send(cities);
     });
+  },
+  getUserData: function(req, res, next){
+
+    //Custom Query
+    User.query('SELECT * FROM user WHERE id=' + req.param("userId") + '', function(err, u) {
+      if (err) return next(err);
+      res.send(u);
+    });
   }
 
 };

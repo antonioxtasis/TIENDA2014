@@ -55,12 +55,6 @@ margin-top: 5px;
 	float: right;
 	margin-left: 10px;
 }
-input[type='text']{
-	height: 25px !important;
-	text-align: center;
-	font-weight: 700;
-	width: 90px;
-}
 #div-total{
 	font-size: 25px;
 }
