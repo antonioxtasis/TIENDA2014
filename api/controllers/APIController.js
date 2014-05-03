@@ -52,6 +52,13 @@ module.exports = {
       if (err) return next(err);
       res.send(u);
     });
+  },getUserAddress: function(req, res, next){
+
+    //Custom Query
+    User.query('SELECT * FROM address WHERE id=' + req.param("id_address") + '', function(err, u) {
+      if (err) return next(err);
+      res.send(u);
+    });
   }
 
 };

@@ -13,10 +13,23 @@ module.exports = {
 
   attributes: {
   	
-  	name: {
+  	first_name: {
   		type: 'string',
   		required: true
   	},
+
+    last_name: {
+      type: 'string',
+      required: true
+    },
+
+    id_address: {
+      type: 'int'
+    },
+
+    phone: {
+      type: 'string'
+    },
 
   	title: {
   		type: 'string'

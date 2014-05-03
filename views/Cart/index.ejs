@@ -43,17 +43,12 @@
 					<tr>
 						<td></td>
 						<td>Last Name: </td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>Company Name:</td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+						<td><input id="user-last-name" class="form-control" style= "width: 270px !important;"type="text" /></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>Address: </td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+						<td><input id="user-address" class="form-control" style= "width: 270px !important;"type="text" /></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -78,7 +73,7 @@
 					<tr>
 						<td></td>
 						<td>Phone: 	</td>
-						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+						<td><input id="user-phone" class="form-control" style= "width: 270px !important;"type="text" /></td>
 					</tr>
 				</table>
 				<br>
@@ -238,10 +233,8 @@
 	/************************************************************************************/	
 	/*****************************  LLAMADAS AJAX ***************************************/	
 	/************************************************************************************/
-	
-	$(document).ready(function(){
 
-		var userId = 3;
+	$(document).ready(function(){
 
 	/*************************** Get User Data *****************/
       $.ajax({
@@ -254,12 +247,15 @@
 
          for (var i=0;i<data.length;i++) {
          	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
-         		$("#user-name").val(data[i].name);
+         		$("#user-name").val(data[i].first_name);
+         		$("#user-last-name").val(data[i].last_name);
          		$("#user-email").val(data[i].email);
+         		$("#user-phone").val(data[i].phone);
          	}         	           
          }
        }
-      });      
+      });    
+
       //*************************** Get list of Countries *****************/
       $.ajax({
        type:"GET",
@@ -271,7 +267,7 @@
 
          for (var i=0;i<data.length;i++) { 
            $("#country").append(
-                 "<option id=country_"+data[i].code+">" + data[i].name + "</option>"
+                 "<option value="+data[i].id+">" + data[i].name + "</option>"
            );
          }
        }
@@ -287,7 +283,7 @@
 
          for (var i=0;i<data.length;i++) { 
            $("#state").append(
-                 "<option id=state_"+data[i].id_country+">" + data[i].name + "</option>"
+                 "<option value="+data[i].id+">" + data[i].name + "</option>"
            );
          }
        }
@@ -303,11 +299,44 @@
 
          for (var i=0;i<data.length;i++) { 
            $("#city").append(
-                 "<option id=city_"+data[i].id_state+">" + data[i].name + "</option>"
+                 "<option value="+data[i].id+">" + data[i].name + "</option>"
            );
          }
        }
       });
+
+      /*************************** Get User Address *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getUserAddress?id_address=' + <%= session.User.id_address %>,
+       data: {},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) {
+         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
+         		$("#user-address").val(data[i].neighborhood);
+
+         		$("#country option").each(function(){
+				  if ($(this).val() == data[i].id_country)
+				  	$(this).attr("selected","selected");
+				});
+
+         		$("#state option").each(function(){
+				  if ($(this).val() == data[i].id_state)
+				    $(this).attr("selected","selected");
+				});
+
+				$("#city option").each(function(){
+				  if ($(this).val() == data[i].id_city)
+				    $(this).attr("selected","selected");
+				});
+         	}         	           
+         }
+       }
+      });      
+
    });
 
 	

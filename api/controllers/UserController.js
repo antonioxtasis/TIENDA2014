@@ -25,7 +25,10 @@ module.exports = {
   create: function(req, res, next) {
 
     var userObj = {
-      name: req.param('name'),
+      first_name: req.param('first_name'),
+      last_name: req.param('last_name'),
+      id_address: "",
+      phone: req.param('phone'),
       title: req.param('title'),
       email: req.param('email'),
       encryptedPassword: req.param('encryptedPassword'),
