@@ -1,0 +1,139 @@
+<div class="container">
+	<div id="main" class="col-md-8">
+		
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" id="myTab">
+		  <li class="active"><a href="#step1" data-toggle="tab">Step 1</a></li>
+		  <li><a href="#step2" data-toggle="tab">Step 2</a></li>
+		  <li><a href="#step3" data-toggle="tab">Step 3</a></li>
+		  <li><a href="#step4" data-toggle="tab">Step 4</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div class="tab-pane active" id="step1">
+				<h1>Shopping Cart</h1>
+				<table class='table'>
+					<thead>
+						<th>ID</th>
+						<th>Article</th>
+						<th>Unit Price</th>
+						<th>Quantity</th>
+						<th>Subtotal</th>
+					</thead>
+					<tbody id="table-body">
+						<!-- Render here -->
+					</tbody>
+				</table>
+				<div id="div-total" style="float: right;">Total: $<b id="total"></b></div>
+				<br>
+				<hr>
+				<a type="submit" id="btn-step1" class="btn btn-success" style="float: right;">Save and continue...</a>
+
+			</div>
+			<div class="tab-pane" id="step2">
+				<!-- Content here -->
+			</div>
+			<div class="tab-pane" id="step3">
+				<!-- Content here -->
+			</div>
+			<div class="tab-pane" id="step4">
+				<!-- Content here -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+	function calculateTotal(){
+		var total = 0.00;
+		$("#table-body  tr").each(function(){
+			sub =  $(this).find(".subtotal").html();
+			subtotal = parseFloat(sub);
+			if(sub!=undefined){
+				total += subtotal;
+			}				
+		});
+		$("#total").append(total);
+	}
+
+
+
+	//Get article list of the JSON saved in LocalStorage
+
+	//Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
+	var restoredData = JSON.parse(localStorage.getItem('data'));
+
+	//Fill the Table
+	for (var i=0; i < restoredData.articles.length; i++) {
+		if(restoredData.articles[i] != null && restoredData.articles[i] != ""){
+			$("#table-body").append(
+	       		  "<tr id='row_"+i+"'>"
+	       		+ "<td class=id>" + restoredData.articles[i].id + "</td>"
+	       		+ "<td><b>" + restoredData.articles[i].name + "<b></td>"
+	       		+ "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
+	       		+ "<td><span class=quantity>" + restoredData.articles[i].quantity + "</span></td>"
+	       		+ "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
+	       		+ "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
+	       		+ "<tr>"
+	   		);
+		}       
+     }
+
+     calculateTotal();
+
+ 	/***************  Events ******************/
+	function removeItem(elem){
+		var id = elem.id;
+
+		//Get the row index; #optional
+		var row_index = $("#" + id).parent().parent().attr("id");
+		row_index = row_index.substring(4);
+		delete restoredData.articles[row_index];
+
+		//Update LocalStorage variable; #optional
+		localStorage.setItem('data', JSON.stringify(restoredData));
+
+		//Remove the ROW     	
+		$("#" + id).parent().parent().remove();
+
+		//Reload the page
+		location.reload();
+	}
+
+
+     
+	$("#btn-step1").click(function(){
+		var articlesToBuy = {
+	       'articles' : []
+	   	};
+
+	 	var id = "";
+	 	var quantity = "";
+
+	 	//Get id and quantity by each ROW
+		$("#table-body  tr").each(function(){
+			id =  $(this).find(".id").html();
+			quantity =  $(this).find(".quantity").html();
+
+			if(id!=undefined && quantity!=undefined){
+				//PUSH item in variable
+				articlesToBuy.articles.push({"id":id, "quantity":quantity});
+			} 		
+				
+		});
+
+		//SAVE items in localStorage
+		localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
+
+		//Change Tab
+		$('#myTab li:eq(1) a').tab('show');
+	});
+
+
+
+	
+
+</script>

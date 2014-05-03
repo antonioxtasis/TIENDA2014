@@ -5,8 +5,6 @@
 <div class="jumbotron image-src" style="background-image: url('../images/landing.jpg')">
 </div>
 
-<input onclick='getCart(this)' type='button' value='Get Cart' />
-
 <div id="wrapper">
   <div id="columns">
       <!--  Render articles -->
@@ -22,95 +20,102 @@
 </div>
 
 <script>
-   var ids="";
+   
+   var data = {
+       'articles' : []
+   };
 
    function addCart(elem){
-      var id = elem.id.substring(8);
-      ids += id + ","; 
-      localStorage.setItem("articles_added", ids);
-      elem.style.display = 'none';
+      //Get Article ID
+      var id = elem.id.substring(15);
+      var q = $("#select_article_" + id + " option:selected").text();
+      var name = $("#name_article_" + id).text();
+      var price = $("#price_article_" + id).text();
+      
+      //Fade-In
+      $("#button_article_" + id).hide();
+      $("#select_article_" + id).before("<br><span style='color: green;'><b>Added to Cart!</b></span>");
+      $("#select_article_" + id).hide();
+
+      //LocalStorage      
+      data.articles.push({"id":id, "quantity":q, "name":name, "price":price});
+
+      //Converting the JSON string with JSON.stringify then saving with localStorage
+      localStorage.setItem('data', JSON.stringify(data));
    }
-
-
-   function getCart(elem){
-      alert(localStorage.getItem("articles_added"));
-   }
-
   
-  $(document).ready(function(){
-   //************************************************** Get 5 products
-   $.ajax({
-    type:"GET",
-    dataType: 'json',
-    url:'/api/getFiveProducts',
-    data:{},
-    success: function(data){
-      console.log(data);
+   $(document).ready(function(){
+      //*************************** Get 5 products *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getFiveProducts',
+       data:{},
+       success: function(data){
+         console.log(data);
 
-      for (var i=0;i<data.length;i++) { 
-        $("#columns").append(
-              "<div class=pin id=article_"+data[i].id+">"
-            + "<a href=/article/show/" +data[i].id+"><img src="+data[i].imageURL+"></a>"
-            + "<h4>"+data[i].name+"</h4>"
-            + "<p> Price: <b class=money>$"+data[i].price+"</b></p>"
-            + "<input id=article_"+data[i].id+" onclick='addCart(this)' type='button' value='Add to Cart' />"
-            + "</div>"
-        );
-      }
-    }
+         for (var i=0;i<data.length;i++) { 
+           $("#columns").append(
+                 "<div class=pin id=pin_article_"+data[i].id+">"
+               + "<a href=/article/show/" +data[i].id+"><img src="+data[i].imageURL+"></a>"
+               + "<h4 id=name_article_"+data[i].id+">"+data[i].name+"</h4>"
+               + "<p> Price: <b class=money id=price_article_"+data[i].id+">"+data[i].price+"</b></p>"
+               + "<hr>"
+               + "<span><img src='/images/add-to-cart.png' id=button_article_"+data[i].id+" onclick='addCart(this)' class=img-add-to-cart></span>"
+               + "<label id=select_article_"+data[i].id+">Quantity: <select><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></label>"
+               + "</div>"
+           );
+         }
+       }
+      });       
+      //*************************** Get list of Countries *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getCountries',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#country").append(
+                 "<option id=country_"+data[i].code+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
+      //*************************** Get list of States *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getStates',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#state").append(
+                 "<option id=state_"+data[i].id_country+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
+      //*************************** Get list of Cities *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getCities',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#city").append(
+                 "<option id=city_"+data[i].id_state+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
    });
-    
-   //************************************************** Get list of Countries
-   $.ajax({
-    type:"GET",
-    dataType: 'json',
-    url:'/api/getCountries',
-    data:{},
-    success: function(data){
-      console.log(data);
-
-      for (var i=0;i<data.length;i++) { 
-        $("#country").append(
-              "<option id=country_"+data[i].code+">" + data[i].name + "</option>"
-        );
-      }
-    }
-   });
-   //************************************************** Get list of States
-   $.ajax({
-    type:"GET",
-    dataType: 'json',
-    url:'/api/getStates',
-    data:{},
-    success: function(data){
-      console.log(data);
-
-      for (var i=0;i<data.length;i++) { 
-        $("#state").append(
-              "<option id=state_"+data[i].id_country+">" + data[i].name + "</option>"
-        );
-      }
-    }
-   });
-   //************************************************** Get list of Cities
-   $.ajax({
-    type:"GET",
-    dataType: 'json',
-    url:'/api/getCities',
-    data:{},
-    success: function(data){
-      console.log(data);
-
-      for (var i=0;i<data.length;i++) { 
-        $("#city").append(
-              "<option id=city_"+data[i].id_state+">" + data[i].name + "</option>"
-        );
-      }
-    }
-   });
-   //************************************************** Add to Cart 
-
-
-  });
   
 </script>

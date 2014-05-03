@@ -45,6 +45,22 @@ margin-top: 5px;
 .form-delete {
 	display: -webkit-inline-box;
 }
-.add-to-cart{
-	background-color: #9BFFA7;
+.img-add-to-cart{
+	width: 30px !important;
+	border-bottom: 0px !important;
+	float: right !important;
+	cursor: pointer;
+}
+#cart-index{
+	float: right;
+	margin-left: 10px;
+}
+input[type='text']{
+	height: 25px !important;
+	text-align: center;
+	font-weight: 700;
+	width: 90px;
+}
+#div-total{
+	font-size: 25px;
 }

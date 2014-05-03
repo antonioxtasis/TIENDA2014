@@ -46,9 +46,9 @@ body {
 
 .pin img {
 	width: 100%;
-	border-bottom: 1px solid #ccc;
-	padding-bottom: 15px;
-	margin-bottom: 5px;
+	/*border-bottom: 1px solid #CDF;*/
+	padding-bottom: 8px;
+	margin-bottom: -5px;
 }
 
 .pin p {
