@@ -6,7 +6,6 @@
 		  <li class="active"><a href="#step1" data-toggle="tab">Step 1</a></li>
 		  <li><a href="#step2" data-toggle="tab">Step 2</a></li>
 		  <li><a href="#step3" data-toggle="tab">Step 3</a></li>
-		  <li><a href="#step4" data-toggle="tab">Step 4</a></li>
 		</ul>
 
 		<!-- Tab panes -->
@@ -19,7 +18,9 @@
 						<th>Article</th>
 						<th>Unit Price</th>
 						<th>Quantity</th>
+						<th></th>
 						<th>Subtotal</th>
+						<th></th>
 					</thead>
 					<tbody id="table-body">
 						<!-- Render here -->
@@ -32,12 +33,58 @@
 
 			</div>
 			<div class="tab-pane" id="step2">
-				<!-- Content here -->
+				<h1>Billing Address</h1>
+				<table class="table">
+					<tr>
+						<td></td>
+						<td>First Name: </td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Last Name: </td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Company Name:</td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Address: </td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Country: </td>
+						<td><select id="country" class="form-control" style= "width: 270px !important;" ></select></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>State: 	</td>
+						<td><select id="state" class="form-control" style= "width: 270px !important;" ></select></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>City: 	</td>
+						<td><select id="city" class="form-control" style= "width: 270px !important;" ></select></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>E-mail: 	</td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Phone: 	</td>
+						<td><input class="form-control" style= "width: 270px !important;"type="text" /></td>
+					</tr>
+				</table>
+				<br>
+				<a type="submit" id="btn-step2" class="btn btn-success" style="float: right;">Save and continue...</a>
 			</div>
 			<div class="tab-pane" id="step3">
-				<!-- Content here -->
-			</div>
-			<div class="tab-pane" id="step4">
 				<!-- Content here -->
 			</div>
 		</div>
@@ -46,21 +93,7 @@
 
 
 <script>
-
-	function calculateTotal(){
-		var total = 0.00;
-		$("#table-body  tr").each(function(){
-			sub =  $(this).find(".subtotal").html();
-			subtotal = parseFloat(sub);
-			if(sub!=undefined){
-				total += subtotal;
-			}				
-		});
-		$("#total").append(total);
-	}
-
-
-
+	
 	//Get article list of the JSON saved in LocalStorage
 
 	//Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
@@ -74,15 +107,86 @@
 	       		+ "<td class=id>" + restoredData.articles[i].id + "</td>"
 	       		+ "<td><b>" + restoredData.articles[i].name + "<b></td>"
 	       		+ "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
-	       		+ "<td><span class=quantity>" + restoredData.articles[i].quantity + "</span></td>"
+	       		+ "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
+	       		+ "<td>"
+	       		+ 	"<img id='img_less_"+restoredData.articles[i].id+"' src='/images/less.png' style='cursor: pointer;' onclick='lessFunction(this)'>"
+	       		+ 	"<img id='img_more_"+restoredData.articles[i].id+"' src='/images/more.png' style='cursor: pointer;' onclick='moreFunction(this)'>"
+	       		+ "</td>"
 	       		+ "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
 	       		+ "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
 	       		+ "<tr>"
 	   		);
 		}       
-     }
+ 	}
 
-     calculateTotal();
+ 	/***************  Functions ******************/ 	
+	function calculateTotal(){
+		var total = 0.00;
+		var subtotal = 0.00;
+
+		$("#table-body  tr").each(function(){
+			sub =  $(this).find(".subtotal").html();
+			subtotal = parseFloat(sub);
+			if(sub!=undefined){
+				total += subtotal;
+			}				
+		});
+		$("#total").html(total);
+	}
+
+	function lessFunction(elemento){
+		var id = elemento.id;
+
+		//Get the row index; #optional
+		var row = $("#" + id).parent().parent().attr("id");
+
+		//Get the quantity
+		var actual_quantity = $("#" + row).find(".quantity").html();
+
+		if(parseFloat(actual_quantity) > 1){
+			//Parse
+			var resultado = parseFloat(actual_quantity) - 1;
+			//Show new quantity
+			$("#" + row).find(".quantity").html(resultado);
+			//Show new subtotal
+			var actual_price = $("#" + row).find(".price").html();
+			var subtotal = resultado * parseInt(actual_price);
+			$("#" + row).find(".subtotal").html(subtotal);
+
+			//Total refresh
+			calculateTotal();
+		}		
+	}
+
+	function moreFunction(elemento){		
+
+		var id = elemento.id;
+
+		//Get the row index; #optional
+		var row = $("#" + id).parent().parent().attr("id");
+
+		//Get the quantity
+		var actual_quantity = $("#" + row).find(".quantity").html();
+		//Parse
+		var resultado = parseFloat(actual_quantity) + 1;
+		//Show new quantity
+		$("#" + row).find(".quantity").html(resultado);
+		//Show new subtotal
+		var actual_price = $("#" + row).find(".price").html();
+		var subtotal = resultado * parseInt(actual_price);
+		$("#" + row).find(".subtotal").html(subtotal);
+
+		//Total refresh
+		calculateTotal();
+	}
+
+
+
+	//Trigger the Function
+ 	calculateTotal();
+
+
+
 
  	/***************  Events ******************/
 	function removeItem(elem){
@@ -132,7 +236,62 @@
 		$('#myTab li:eq(1) a').tab('show');
 	});
 
+	/*
+	*
+	* 									LLAMADAS AJAX
+	*
+	*/
 
+	$(document).ready(function(){        
+      //*************************** Get list of Countries *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getCountries',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#country").append(
+                 "<option id=country_"+data[i].code+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
+      //*************************** Get list of States *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getStates',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#state").append(
+                 "<option id=state_"+data[i].id_country+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
+      //*************************** Get list of Cities *****************/
+      $.ajax({
+       type:"GET",
+       dataType: 'json',
+       url:'/api/getCities',
+       data:{},
+       success: function(data){
+         console.log(data);
+
+         for (var i=0;i<data.length;i++) { 
+           $("#city").append(
+                 "<option id=city_"+data[i].id_state+">" + data[i].name + "</option>"
+           );
+         }
+       }
+      });
+   });
 
 	
 

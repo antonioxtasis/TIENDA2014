@@ -11,14 +11,6 @@
   </div>
 </div>
 
-<div class="container">
-  <div class="align-center">
-    <select id="country"></select>
-    <select id="state"></select>
-    <select id="city"></select>
-  </div>
-</div>
-
 <script>
    
    var data = {
@@ -67,55 +59,7 @@
            );
          }
        }
-      });       
-      //*************************** Get list of Countries *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getCountries',
-       data:{},
-       success: function(data){
-         console.log(data);
-
-         for (var i=0;i<data.length;i++) { 
-           $("#country").append(
-                 "<option id=country_"+data[i].code+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
-      //*************************** Get list of States *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getStates',
-       data:{},
-       success: function(data){
-         console.log(data);
-
-         for (var i=0;i<data.length;i++) { 
-           $("#state").append(
-                 "<option id=state_"+data[i].id_country+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
-      //*************************** Get list of Cities *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getCities',
-       data:{},
-       success: function(data){
-         console.log(data);
-
-         for (var i=0;i<data.length;i++) { 
-           $("#city").append(
-                 "<option id=city_"+data[i].id_state+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
+      }); 
    });
   
 </script>
