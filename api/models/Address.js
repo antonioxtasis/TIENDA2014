@@ -20,16 +20,20 @@ module.exports = {
       type: 'int'
     },
     neighborhood: {
-      type: 'string'
+      type: 'string', 
+      required: true
     },
     street: {
-      type: 'string'
+      type: 'string', 
+      required: true
     },
     number: {
-      type: 'string'
+      type: 'string', 
+      required: true
     },
     zipcode: {
-      type: 'int'
+      type: 'int', 
+      required: true
     },
 
   }

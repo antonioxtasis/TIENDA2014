@@ -119,14 +119,16 @@ module.exports = {
 
     if (req.session.User.admin) {
       var userObj = {
-        name: req.param('name'),
+        first_name: req.param('first_name'),
+        last_name: req.param('last_name'),
         title: req.param('title'),
         email: req.param('email'),
         admin: req.param('admin')
       }
     } else {
       var userObj = {
-        name: req.param('name'),
+        first_name: req.param('first_name'),
+        last_name: req.param('last_name'),
         title: req.param('title'),
         email: req.param('email')
       }
@@ -136,9 +138,9 @@ module.exports = {
       if (err) {
         return res.redirect('/user/edit/' + req.param('id'));
       }
-
       res.redirect('/user/show/' + req.param('id'));
     });
+
   },
 
   destroy: function(req, res, next) {

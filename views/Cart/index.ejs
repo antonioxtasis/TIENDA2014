@@ -4,7 +4,7 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" id="myTab">
 		  <li class="active"><a href="#step1" data-toggle="tab">Step 1</a></li>
-		  <li><a href="#step2" data-toggle="tab">Step 2</a></li>
+		  <li><a id="step2_tab" href="#step2" data-toggle="tab">Step 2</a></li>
 		  <li><a href="#step3" data-toggle="tab">Step 3</a></li>
 		</ul>
 
@@ -85,6 +85,44 @@
 		</div>
 	</div>
 </div>
+
+    <div class="modal fade" id="address" data-backdrop="static" 
+   data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Añade Tu Dirección</h4>
+          </div>
+          <div class="modal-body">            
+            <form id="address_form" role="form" action="/address/create">
+              <div class="form-group">
+                <input type="text" placeholder="Street" name="street" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" placeholder="Neighborhood" name="neighborhood" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" placeholder="Number" name="number" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" placeholder="Zipcode" name="zipcode" class="form-control">
+              </div>
+              <div class="form-group">
+                <select name="id_country" id="id_country" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <select name="id_state" id="id_state" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <select name="id_city" id="id_city" class="form-control"></select>
+              </div>
+              <button id="submit-signin" type="submit" class="btn btn-block btn-success">Sign in</button>
+              <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 <script>
@@ -236,106 +274,141 @@
 
 	$(document).ready(function(){
 
-	/*************************** Get User Data *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getUserData?userId=' + <%= session.User.id %>,
-       data: {},
-       success: function(data){
-         console.log(data);
+		$("#step2_tab, #btn-step1").click(function(){
+			/*************************** Get User Data *****************/
+		      $.ajax({
+		       type:"GET",
+		       dataType: 'json',
+		       url:'/api/getUserData?userId=' + <%= session.User.id %>,
+		       data: {},
+		       success: function(data){
+		         console.log(data);
 
-         for (var i=0;i<data.length;i++) {
-         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
-         		$("#user-name").val(data[i].first_name);
-         		$("#user-last-name").val(data[i].last_name);
-         		$("#user-email").val(data[i].email);
-         		$("#user-phone").val(data[i].phone);
-         	}         	           
-         }
-       }
-      });    
+		         for (var i=0;i<data.length;i++) {
+		         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
+		         		$("#user-name").val(data[i].first_name);
+		         		$("#user-last-name").val(data[i].last_name);
+		         		$("#user-email").val(data[i].email);
+		         		$("#user-phone").val(data[i].phone);
+		         	}         	           
+		         }
+		       }
+		      });    
 
-      //*************************** Get list of Countries *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getCountries',
-       data:{},
-       success: function(data){
-         console.log(data);
+		      //*************************** Get list of Countries *****************/
+		      $.ajax({
+		       type:"GET",
+		       dataType: 'json',
+		       url:'/api/getCountries',
+		       data:{},
+		       success: function(data){
+		         console.log(data);
 
-         for (var i=0;i<data.length;i++) { 
-           $("#country").append(
-                 "<option value="+data[i].id+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
-      //*************************** Get list of States *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getStates',
-       data:{},
-       success: function(data){
-         console.log(data);
+		         for (var i=0;i<data.length;i++) { 
+		           $("#country").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
 
-         for (var i=0;i<data.length;i++) { 
-           $("#state").append(
-                 "<option value="+data[i].id+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
-      //*************************** Get list of Cities *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getCities',
-       data:{},
-       success: function(data){
-         console.log(data);
+		           $("#id_country").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
+		         }
+		       }
+		      });
+		      //*************************** Get list of States *****************/
+		      $.ajax({
+		       type:"GET",
+		       dataType: 'json',
+		       url:'/api/getStates',
+		       data:{},
+		       success: function(data){
+		         console.log(data);
 
-         for (var i=0;i<data.length;i++) { 
-           $("#city").append(
-                 "<option value="+data[i].id+">" + data[i].name + "</option>"
-           );
-         }
-       }
-      });
+		         for (var i=0;i<data.length;i++) { 
+		           $("#state").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
 
-      /*************************** Get User Address *****************/
-      $.ajax({
-       type:"GET",
-       dataType: 'json',
-       url:'/api/getUserAddress?id_address=' + <%= session.User.id_address %>,
-       data: {},
-       success: function(data){
-         console.log(data);
+		           $("#id_state").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
+		         }
+		       }
+		      });
+		      //*************************** Get list of Cities *****************/
+		      $.ajax({
+		       type:"GET",
+		       dataType: 'json',
+		       url:'/api/getCities',
+		       data:{},
+		       success: function(data){
+		         console.log(data);
 
-         for (var i=0;i<data.length;i++) {
-         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
-         		$("#user-address").val(data[i].neighborhood);
+		         for (var i=0;i<data.length;i++) { 
+		           $("#city").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
 
-         		$("#country option").each(function(){
-				  if ($(this).val() == data[i].id_country)
-				  	$(this).attr("selected","selected");
-				});
+		           $("#id_city").append(
+		                 "<option value="+data[i].id+">" + data[i].name + "</option>"
+		           );
+		         }
+		       }
+		      });
 
-         		$("#state option").each(function(){
-				  if ($(this).val() == data[i].id_state)
-				    $(this).attr("selected","selected");
-				});
+		      /*************************** Get User Address *****************/
+		      <%if (session.User.id_address) { %>
+		            var idaddress = <%= session.User.id_address %>;
+		            $.ajax({
+				       type:"GET",
+				       dataType: 'json',
+				       url:'/api/getUserAddress?id_address=' + idaddress,
+				       data: {},
+				       success: function(data){
+				         console.log(data);
+				         for (var i=0;i<data.length;i++) {
+				         	if (data[i]!=undefined && data[i]!=null && data[i]!=""){
+				         		$("#user-address").val(data[i].neighborhood);
 
-				$("#city option").each(function(){
-				  if ($(this).val() == data[i].id_city)
-				    $(this).attr("selected","selected");
-				});
-         	}         	           
-         }
-       }
-      });      
+				         		$("#country option").each(function(){
+								  if ($(this).val() == data[i].id_country)
+								  	$(this).attr("selected","selected");
+								});
+
+				         		$("#state option").each(function(){
+								  if ($(this).val() == data[i].id_state)
+								    $(this).attr("selected","selected");
+								});
+
+								$("#city option").each(function(){
+								  if ($(this).val() == data[i].id_city)
+								    $(this).attr("selected","selected");
+								});
+				         	}         	           
+				         }
+				       }
+				      });  
+			  <% } else { %>
+			  		$("#address").modal('show');
+			  <% } %>    
+		});
+
+		$("#address_form").submit(function(e) {
+        	e.preventDefault();
+        	var actionurl = e.currentTarget.action;
+	         $.ajax({
+	                url: actionurl,
+	                type: 'post',
+	                dataType: 'json',
+	                data: $("#address_form").serialize(),
+	                success: function(data) {
+	                	if(data.createdAt){
+	                		location.reload();
+	                	}
+	                }
+	            });
+   		 });
+
 
    });
 

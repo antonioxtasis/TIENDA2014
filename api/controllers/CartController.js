@@ -5,7 +5,12 @@
 module.exports = {
 
   index: function(req, res, next){
-    res.view();    
+    if(req.session.User){
+  		res.view();  
+  	} else{
+  		req.session.cart = 1;
+  		res.redirect("/session/new");
+  	}
   }
 
 };

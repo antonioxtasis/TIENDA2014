@@ -29,8 +29,15 @@ module.exports.policies = {
 		'*': "admin"*/
 	},
 
-	article: {
+	user:{
+		edit: "isAuthenticated", 
+		show: "isAuthenticated", 
 		index: "admin"
+	},
+
+	article: {
+		index: "admin", 
+		new:   "admin"
 	}
 
   /*

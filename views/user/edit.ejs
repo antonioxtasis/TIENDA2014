@@ -1,9 +1,10 @@
 <div class="container">
 	<div id="main" class="col-md-8">
 		<form action="/user/update/<%= user.id %>" method="POST" class="form-signin">
-			<h2> Hey, you're editing a user... </h2>
+			<h2> Edit Your Account. </h2>
 
-			<input value="<%= user.name %>" name="name" type="text" class="form-control"/>
+			<input value="<%= user.first_name %>" name="first_name" type="text" class="form-control"/>
+			<input value="<%= user.last_name %>" name="last_name" type="text" class="form-control"/>
 			<input value="<%= user.title %>" name="title" type="text" class="form-control"/>
 			<input value="<%= user.email %>" name="email" type="text" class="form-control"/>
 			<% if (session.authenticated && session.User.admin) { %>
