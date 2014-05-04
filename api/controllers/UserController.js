@@ -71,8 +71,11 @@ module.exports = {
         // After successfully creating the user
         // redirect to the show action
         // From ep1-6: //res.json(user); 
-
-        res.redirect('/user/show/' + user.id);
+        if(req.session.cart == 1){
+          res.redirect('/cart/index');
+        }else{
+          res.redirect('/user/show/' + user.id);
+        }
       });
     });
   },
