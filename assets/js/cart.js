@@ -1,3 +1,24 @@
+function saveArticlesToBuy(){
+  var articlesToBuy = {
+      'articles' : []
+  };
+
+  var id = "";
+  var quantity = "";
+  //Get id and quantity by each ROW
+  $("#table-body  tr").each(function(){
+    id =  $(this).find(".id").html();
+    quantity =  $(this).find(".quantity").html();
+    if(id!=undefined && quantity!=undefined){
+      //PUSH item in variable
+      articlesToBuy.articles.push({"id":id, "quantity":quantity});
+    }       
+              
+  });
+
+  //SAVE items in localStorage
+  localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
+}
 $(document).ready(function(){
 
   Conekta.setPublishableKey('key_LUYetCR5VpoHknb8');
@@ -103,27 +124,28 @@ $(document).ready(function(){
   }
      
   $("#btn-step1").click(function(){
-    var articlesToBuy = {
-      'articles' : []
-    };
+    saveArticlesToBuy();
+    // var articlesToBuy = {
+    //   'articles' : []
+    // };
 
-    var id = "";
-    var quantity = "";
-    //Get id and quantity by each ROW
-    $("#table-body  tr").each(function(){
-      id =  $(this).find(".id").html();
-      quantity =  $(this).find(".quantity").html();
-      if(id!=undefined && quantity!=undefined){
-        //PUSH item in variable
-        articlesToBuy.articles.push({"id":id, "quantity":quantity});
-      }       
+    // var id = "";
+    // var quantity = "";
+    // //Get id and quantity by each ROW
+    // $("#table-body  tr").each(function(){
+    //   id =  $(this).find(".id").html();
+    //   quantity =  $(this).find(".quantity").html();
+    //   if(id!=undefined && quantity!=undefined){
+    //     //PUSH item in variable
+    //     articlesToBuy.articles.push({"id":id, "quantity":quantity});
+    //   }       
                 
-    });
+    // });
 
-      //SAVE items in localStorage
-      localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
-      //Change Tab
-      $('#myTab li:eq(1) a').tab('show');
+    //   //SAVE items in localStorage
+    //   localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
+    //   //Change Tab
+    //   $('#myTab li:eq(1) a').tab('show');
   });
 
 
@@ -154,6 +176,8 @@ $(document).ready(function(){
     
     // DEMO ONLY //
     $('#activate-step-2').on('click', function(e) {
+        saveArticlesToBuy();
+
         $('ul.setup-panel li:eq(1)').removeClass('disabled');
         $('ul.setup-panel li a[href="#step-2"]').trigger('click');
         $('#step-2').show();
@@ -296,7 +320,7 @@ $(document).ready(function(){
                             location.reload();
                         }
                     }
-                });
+              });
          });
 
          var usuario;
@@ -339,14 +363,104 @@ $(document).ready(function(){
         function conektaSuccessResponseHandler(response) {
             $('.backdrop_graph').hide();
             $(".payment-errors").empty();
-            console.log(response);
+            $.ajax({
+              url: '/order/create',
+              type: 'post',
+              dataType: 'json',
+              data: JSON.parse(localStorage.getItem('data')),
+              success: function(data) {
+                alert("hola");
+              }
+            });
         }
 
         function conektaErrorResponseHandler(response) {
-            $('.backdrop_graph').hide();
-            console.log(response);
-            $(".payment-errors").text(response.message);
+          $('.backdrop_graph').hide();
+          console.log(response);
+          $(".payment-errors").text(response.message);
+          $.ajax({
+              url: '/order/create',
+              type: 'post',
+              dataType: 'json',
+              data: JSON.parse(localStorage.getItem('data')),
+              success: function(data) {
+                alert("hola");
+              }
+            });
         }
 
     
 });
+
+  function lessFunction(elemento){
+    var id = elemento.id;
+    //Get the row index; #optional
+    var row = $("#" + id).parent().parent().attr("id");
+    //Get the quantity
+    var actual_quantity = $("#" + row).find(".quantity").html();
+    if(parseFloat(actual_quantity) > 1){
+      //Parse
+      var resultado = parseFloat(actual_quantity) - 1;
+      //Show new quantity
+      $("#" + row).find(".quantity").html(resultado);
+      //Show new subtotal
+      var actual_price = $("#" + row).find(".price").html();
+      var subtotal = resultado * parseInt(actual_price);
+      $("#" + row).find(".subtotal").html(subtotal);
+      //Total refresh
+      calculateTotal();
+
+      saveArticlesToBuy();
+    }       
+  }
+
+  function moreFunction(elemento){        
+    var id = elemento.id;
+    //Get the row index; #optional
+    var row = $("#" + id).parent().parent().attr("id");
+    //Get the quantity
+    var actual_quantity = $("#" + row).find(".quantity").html();
+    //Parse
+    var resultado = parseFloat(actual_quantity) + 1;
+    //Show new quantity
+    $("#" + row).find(".quantity").html(resultado);
+    //Show new subtotal
+    var actual_price = $("#" + row).find(".price").html();
+    var subtotal = resultado * parseInt(actual_price);
+    $("#" + row).find(".subtotal").html(subtotal);
+    //Total refresh
+    calculateTotal();
+
+    saveArticlesToBuy();
+  }
+
+  /***************  Functions ******************/     
+  function calculateTotal(){
+    var total = 0.00;
+    var subtotal = 0.00;
+
+    $("#table-body  tr").each(function(){
+      sub =  $(this).find(".subtotal").html();
+      subtotal = parseFloat(sub);
+      if(sub!=undefined){
+        total += subtotal;
+      }               
+    });
+    $("#total").html(total);
+  }
+
+
+  /***************  Events ******************/
+  function removeItem(elem){
+    var id = elem.id;
+    //Get the row index; #optional
+    var row_index = $("#" + id).parent().parent().attr("id");
+    row_index = row_index.substring(4);
+    delete restoredData.articles[row_index];
+    //Update LocalStorage variable; #optional
+    localStorage.setItem('data', JSON.stringify(restoredData));
+    //Remove the ROW        
+    $("#" + id).parent().parent().remove();
+    //Reload the page
+    location.reload();
+  }
