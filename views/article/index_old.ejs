@@ -1,0 +1,23 @@
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,400italic,600italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="/styles/pinterest.css">
+
+
+<div id="wrapper">
+  <div id="columns">
+  <% _.each(articles, function(article) { %>
+    <div class="pin" id="article_<%= article.id %>">
+        <img src="<%= article.imageURL %>" alt="<%= article.imageURL %>">
+        <h3><%= article.name %></h3>
+        <p>Price: <b class="money">$<%= article.price %></b></p>
+        <p><%= article.description %></p>
+        <a href="/article/show/<%= article.id %>" class="btn btn-sm btn-primary">Show</a>
+        <a href="/article/edit/<%= article.id %>" class="btn btn-sm btn-warning">Edit</a>
+        <form class="form-delete" action="/article/destroy/<%= article.id %>" method="POST">
+          <input type="hidden" name="_method" value="delete"/>
+          <input type="submit" class="btn btn-sm btn-danger" value="Delete"/>
+          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+        </form>
+      </div>
+   <% }) %>
+  </div>
+</div>

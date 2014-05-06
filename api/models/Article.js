@@ -13,6 +13,14 @@ module.exports = {
   		required: true
   	},
 
+    id_article_category: {
+      type: 'int'
+    },
+
+    gender: {
+      type: 'int'
+    },
+
   	price: {
   		type: 'int'
   	},

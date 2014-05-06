@@ -1,23 +1,95 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,400italic,600italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="/styles/pinterest.css">
+<br>
+<div class="container">
 
+  <h3>Categories</h3>
 
-<div id="wrapper">
-  <div id="columns">
-  <% _.each(articles, function(article) { %>
-    <div class="pin" id="article_<%= article.id %>">
-        <img src="<%= article.imageURL %>" alt="<%= article.imageURL %>">
-        <h3><%= article.name %></h3>
-        <p>Price: <b class="money">$<%= article.price %></b></p>
-        <p><%= article.description %></p>
-        <a href="/article/show/<%= article.id %>" class="btn btn-sm btn-primary">Show</a>
-        <a href="/article/edit/<%= article.id %>" class="btn btn-sm btn-warning">Edit</a>
-        <form class="form-delete" action="/article/destroy/<%= article.id %>" method="POST">
-          <input type="hidden" name="_method" value="delete"/>
-          <input type="submit" class="btn btn-sm btn-danger" value="Delete"/>
-          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-        </form>
-      </div>
-   <% }) %>
+  <!-- Categorias -->
+  <div class="col-md-2">
+    <div class="bs-docs-sidebar hidden-print affix-top" role="complementary">
+      <ul id="categories" class="nav bs-docs-sidenav">
+        <!-- Render here -->
+      </ul>
+    </div>
   </div>
+
+  <!-- Articulos -->
+  <div class="col-md-7" role="main">
+    <div id="wrapper">
+      <div id="columns">
+          <!-- Render here -->
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+
+    function clickCategoria(elem){
+
+        if(elem == "inicio"){
+          var id = 1;
+        }else{
+          var id = elem.id.substring(9);
+        }
+
+        $("#columns").empty();
+
+        $.ajax({
+           type:"GET",
+           dataType: 'json',
+           url:'/article/getArticleByCategoryId?idCategory='+ id,
+           data: {},
+           success: function(data){
+             console.log(data);
+             for (var i=0;i<data.length;i++) {
+                $("#columns").append(
+                     "<div class=pin id=pin_article_"+data[i].id+">"
+                   + "<a href=/article/show/" +data[i].id+"><img src="+data[i].imageURL+"></a>"
+                   + "<h4 id=name_article_"+data[i].id+">"+data[i].name+"</h4>"
+                   + "<p> Price: <b class=money id=price_article_"+data[i].id+">"+data[i].price+"</b></p>"
+                   + "<hr>"
+                   + "<span><img src='/images/add-to-cart.png' id=button_article_"+data[i].id+" onclick='addCart(this)' class=img-add-to-cart></span>"
+                   + "<label id=select_article_"+data[i].id+">Quantity: <select><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></label>"
+                   + "</div>"
+               );       
+             }
+           }
+          });
+         
+        }
+
+
+    $(document).ready(function(){
+      $.ajax({
+           type:"GET",
+           dataType: 'json',
+           url:'/api/getArticleCategories',
+           data: {},
+           success: function(data){
+             console.log(data);
+             for (var i=0;i<data.length;i++) {
+                if (data[i]!=undefined && data[i]!=null && data[i]!=""){
+                    if(i==0){
+                      $("#categories").append(
+                          "<li class=category id='category_" + data[i].id + "' onclick=clickCategoria(this) class=active><a>" + data[i].name + "</a></li>"
+                      );
+                    }else{
+                       $("#categories").append(
+                            "<li class=category id='category_" + data[i].id + "' onclick=clickCategoria(this)><a>" + data[i].name + "</a></li>"
+                       );
+                    }
+                }                      
+             }
+           }
+          });
+
+        clickCategoria("inicio");
+
+      });
+
+
+  </script>
+
 </div>

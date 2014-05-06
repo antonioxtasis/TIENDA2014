@@ -52,12 +52,21 @@ module.exports = {
       if (err) return next(err);
       res.send(u);
     });
-  },getUserAddress: function(req, res, next){
+  },
+  getUserAddress: function(req, res, next){
 
     //Custom Query
     User.query('SELECT * FROM address WHERE id=' + req.param("id_address") + '', function(err, u) {
       if (err) return next(err);
       res.send(u);
+    });
+  },
+  getArticleCategories: function(req, res, next){
+
+    //Custom Query
+    ArticleCategory.query('SELECT * FROM articlecategory ORDER BY id', function(err, categories) {
+      if (err) return next(err);
+      res.send(categories);
     });
   }
 

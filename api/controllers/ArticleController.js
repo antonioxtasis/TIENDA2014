@@ -47,6 +47,18 @@ module.exports = {
       });
     });
 
+  },
+
+  getArticleByCategoryId: function(req, res, next){
+
+    //Custom Query
+    Article.query('SELECT * FROM onlinestore.article WHERE id_article_category = ' + req.param("idCategory") + ' ORDER BY name', function(err, categories) {
+      console.log(categories);
+      console.log(err);
+
+      if (err) return next(err);
+      res.send(categories);
+    });
   }
 
 };
