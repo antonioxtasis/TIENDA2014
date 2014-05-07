@@ -86,3 +86,6 @@ margin-top: 5px;
 select{
 height: 40px!important;
 }
+#panel-categories{
+	background-color: rgb(231, 231, 231);
+}

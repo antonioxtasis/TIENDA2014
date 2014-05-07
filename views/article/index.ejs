@@ -46,6 +46,7 @@
            data: {},
            success: function(data){
              console.log(data);
+             $("#span_category_" + id).html(data.length);
              if(data.length > 0){
                 for (var i=0;i<data.length;i++) {
                     $("#columns").append(
@@ -64,9 +65,8 @@
                }
              }
              
-          });
-         
-        }
+          });         
+    }
 
 
     $(document).ready(function(){
@@ -82,8 +82,8 @@
                       $("#categories").append(
                         " <li id='category_" + data[i].id + "' onclick=clickCategoria(this) style='cursor:pointer;'>"+
                             "<a class=category>"+
-                              "<span class='badge pull-right'></span>"+
-                               data[i].name +
+                              "<span id=span_category_"+data[i].id+" class='badge pull-right'></span>"+
+                               "<b>" + data[i].name.toUpperCase() + "</b>" +
                             "</a>"+
                           "</li>"
                       );
