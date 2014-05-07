@@ -13,10 +13,15 @@ module.exports = {
     }
 
     Address.create(addressObj, function articleCreated(err, address) {
-    	if(!err){
+    	console.log("error: " + err);
+      if(!err){
+      console.log("Sesion "+req.session.User.id);
+      console.log("Address "+address);
 			User.findOne(req.session.User.id).done(function(err, user) {
+        console.log(err);
 			  user.id_address = address.id;
 			  user.save(function(err) {
+          console.log(err);
 			    if(!err){
 			    	req.session.User.id_address = address.id;
 			    	res.send(JSON.stringify(address));
