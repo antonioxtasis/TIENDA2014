@@ -5,7 +5,7 @@
 
 <div class="container">
   <!-- Categorias -->
-  <div class="col-md-2">
+  <div id="panel-categories" class="col-md-2">
       <ul id="categories" class="nav nav-pills nav-stacked">
         <h3>Categories</h3>
         <!-- Render here -->
@@ -52,7 +52,7 @@
                     $("#columns").append(
                          "<div class=pin id=pin_article_"+data[i].id+">"
                        + "<a href=/article/show/" +data[i].id+"><img src="+data[i].imageURL+"></a>"
-                       + "<h4 id=name_article_"+data[i].id+">"+data[i].name+"</h4>"
+                       + "<h4 id=name_article_"+data[i].id+">"+data[i].name.toUpperCase() +"</h4>"
                        + "<p> Price: <b class=money id=price_article_"+data[i].id+">"+data[i].price+"</b></p>"
                        + "<hr>"
                        + "<span><img src='/images/add-to-cart.png' id=button_article_"+data[i].id+" onclick='addCart(this)' class=img-add-to-cart></span>"
