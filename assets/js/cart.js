@@ -1,4 +1,8 @@
 function saveArticlesToBuy(){
+  // //Reset
+  // localStorage.removeItem(data);
+  // localStorage.setItem('data', "");
+
   var articlesToBuy = {
       'articles' : []
   };
@@ -9,9 +13,18 @@ function saveArticlesToBuy(){
   $("#table-body  tr").each(function(){
     id =  $(this).find(".id").html();
     quantity =  $(this).find(".quantity").html();
+    price =  $(this).find(".price").html();
+    name =  $(this).find(".name").html();
     if(id!=undefined && quantity!=undefined){
       //PUSH item in variable
-      articlesToBuy.articles.push({"id":id, "quantity":quantity});
+      articlesToBuy.articles.push({"id":id, "quantity":quantity, "price":price});
+
+      // //LocalStorage 
+
+      // data.articles.push({"id":id, "quantity":quantity, "name":name, "price":price});
+
+      // //Converting the JSON string with JSON.stringify then saving with localStorage
+      // localStorage.setItem('data', JSON.stringify(data));
     }       
               
   });
@@ -34,7 +47,7 @@ $(document).ready(function(){
         $("#table-body").append(
               "<tr id='row_"+i+"'>"
             + "<td class=id>" + restoredData.articles[i].id + "</td>"
-            + "<td><b>" + restoredData.articles[i].name + "<b></td>"
+            + "<td><span class=name><b>" + restoredData.articles[i].name + "<b></span></td>"
             + "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
             + "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
             + "<td>"
@@ -368,7 +381,7 @@ $(document).ready(function(){
               url: '/order/create',
               type: 'post',
               dataType: 'json',
-              data: JSON.parse(localStorage.getItem('data')),
+              data: JSON.parse(localStorage.getItem('articlesToBuy')),
               success: function(data) {
                 alert("hola");
               }
@@ -383,7 +396,7 @@ $(document).ready(function(){
               url: '/order/create',
               type: 'post',
               dataType: 'json',
-              data: JSON.parse(localStorage.getItem('data')),
+              data: JSON.parse(localStorage.getItem('articlesToBuy')),
               success: function(data) {
                 alert("hola");
               }

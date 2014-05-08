@@ -12,8 +12,12 @@
 </div>
 
 <script>
-  //Create the variable empty
-  localStorage.setItem('data', "");
+  
+  if(data == null || data == undefined){
+    //Create the variable empty
+    localStorage.setItem('data', "");
+  }
+  
    
    // var data = {
    //     'articles' : []
