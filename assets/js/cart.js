@@ -317,7 +317,8 @@ $(document).ready(function(){
                     data: $("#address_form").serialize(),
                     success: function(data) {
                         if(data.createdAt){
-                            location.reload();
+                          $("#user-address").val($("#street").val());
+                          $("#address").modal('hide');
                         }
                     }
               });
