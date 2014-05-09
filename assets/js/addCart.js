@@ -2,7 +2,10 @@
 var data = {
        'articles' : []
 };
-data = JSON.parse(localStorage.getItem('data'));
+
+if(localStorage.getItem('data')!=null || localStorage.getItem('data')!=undefined || localStorage.getItem('data')!=""){
+      data = JSON.parse(localStorage.getItem('data'));
+}
 
 function addCart(elem){
       //Get Article ID

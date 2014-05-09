@@ -1,82 +1,49 @@
-function saveArticlesToBuy(){
-  // //Reset
-  // localStorage.removeItem(data);
-  // localStorage.setItem('data', "");
+/***************  Events ******************/
+function removeItem(elem){
+    var id = elem.id;
+    //Remove the ROW        
+    $("#" + id).parent().parent().remove();
 
-  var articlesToBuy = {
-      'articles' : []
-  };
+    saveArticlesToBuy();
 
-  var id = "";
-  var quantity = "";
-  //Get id and quantity by each ROW
-  $("#table-body  tr").each(function(){
-    id =  $(this).find(".id").html();
-    quantity =  $(this).find(".quantity").html();
-    price =  $(this).find(".price").html();
-    name =  $(this).find(".name").html();
-    if(id!=undefined && quantity!=undefined){
-      //PUSH item in variable
-      articlesToBuy.articles.push({"id":id, "quantity":quantity, "price":price});
-
-      // //LocalStorage 
-
-      // data.articles.push({"id":id, "quantity":quantity, "name":name, "price":price});
-
-      // //Converting the JSON string with JSON.stringify then saving with localStorage
-      // localStorage.setItem('data', JSON.stringify(data));
-    }       
-              
-  });
-
-  //SAVE items in localStorage
-  localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
+    //Reload the page
+    location.reload();
 }
-$(document).ready(function(){
 
-  Conekta.setPublishableKey('key_LUYetCR5VpoHknb8');
-  //Get article list of the JSON saved in LocalStorage
-  if(localStorage.getItem('data')!=null && localStorage.getItem('data')!= ""){
-    $('table').show();
-    $("#error").hide();
-    //Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
-    var restoredData = JSON.parse(localStorage.getItem('data'));
-    //Fill the Table
-    for (var i=0; i < restoredData.articles.length; i++) {
-      if(restoredData.articles[i] != null && restoredData.articles[i] != ""){
-        $("#table-body").append(
-              "<tr id='row_"+i+"'>"
-            + "<td class=id>" + restoredData.articles[i].id + "</td>"
-            + "<td><span class=name><b>" + restoredData.articles[i].name + "<b></span></td>"
-            + "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
-            + "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
-            + "<td>"
-            +   "<img id='img_less_"+restoredData.articles[i].id+"' src='/images/less.png' style='cursor: pointer;' onclick='lessFunction(this)'>"
-            +   "<img id='img_more_"+restoredData.articles[i].id+"' src='/images/more.png' style='cursor: pointer;' onclick='moreFunction(this)'>"
-            + "</td>"
-            + "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
-            + "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
-            + "<tr>"
-        );
-      }       
-    }
+function saveArticlesToBuy(){
+    // //Reset
+    localStorage.removeItem('data');
+    localStorage.setItem('data', "");
 
-  /***************  Functions ******************/     
-  function calculateTotal(){
-    var total = 0.00;
-    var subtotal = 0.00;
+    var articlesToBuy = {
+        'articles' : []
+    };
 
+    var id = "";
+    var quantity = "";
+    var price = "";
+    var name = "";
+
+    //Get id and quantity by each ROW
     $("#table-body  tr").each(function(){
-      sub =  $(this).find(".subtotal").html();
-      subtotal = parseFloat(sub);
-      if(sub!=undefined){
-        total += subtotal;
-      }               
+        id =  $(this).find(".id").html();
+        quantity =  $(this).find(".quantity").html();
+        price =  $(this).find(".price").html();
+        name =  $(this).find(".name").text();
+        if(id!=undefined && quantity!=undefined){
+            //PUSH item in variable
+            articlesToBuy.articles.push({"id":id, "quantity":quantity, "price":price, "name":name});
+        }       
+                
     });
-    $("#total").html(total);
-  }
 
-  function lessFunction(elemento){
+    //SAVE items in localStorage
+    localStorage.setItem('data', JSON.stringify(articlesToBuy));
+    localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
+}
+
+/***************  Functions ******************/ 
+function lessFunction(elemento){
     var id = elemento.id;
     //Get the row index; #optional
     var row = $("#" + id).parent().parent().attr("id");
@@ -93,10 +60,12 @@ $(document).ready(function(){
       $("#" + row).find(".subtotal").html(subtotal);
       //Total refresh
       calculateTotal();
-    }       
-  }
 
-  function moreFunction(elemento){        
+      saveArticlesToBuy();
+    }       
+}
+
+function moreFunction(elemento){        
     var id = elemento.id;
     //Get the row index; #optional
     var row = $("#" + id).parent().parent().attr("id");
@@ -112,99 +81,111 @@ $(document).ready(function(){
     $("#" + row).find(".subtotal").html(subtotal);
     //Total refresh
     calculateTotal();
-  }
 
-  //Trigger the Function
-  calculateTotal();
-  }else{
-    $("#error").show();
-    $('table').hide();
-  }
-
-  /***************  Events ******************/
-  function removeItem(elem){
-    var id = elem.id;
-    //Get the row index; #optional
-    var row_index = $("#" + id).parent().parent().attr("id");
-    row_index = row_index.substring(4);
-    delete restoredData.articles[row_index];
-    //Update LocalStorage variable; #optional
-    localStorage.setItem('data', JSON.stringify(restoredData));
-    //Remove the ROW        
-    $("#" + id).parent().parent().remove();
-    //Reload the page
-    location.reload();
-  }
-     
-  $("#btn-step1").click(function(){
     saveArticlesToBuy();
-    // var articlesToBuy = {
-    //   'articles' : []
-    // };
+}
+    
+function calculateTotal(){
+    var total = 0.00;
+    var subtotal = 0.00;
 
-    // var id = "";
-    // var quantity = "";
-    // //Get id and quantity by each ROW
-    // $("#table-body  tr").each(function(){
-    //   id =  $(this).find(".id").html();
-    //   quantity =  $(this).find(".quantity").html();
-    //   if(id!=undefined && quantity!=undefined){
-    //     //PUSH item in variable
-    //     articlesToBuy.articles.push({"id":id, "quantity":quantity});
-    //   }       
-                
-    // });
+    $("#table-body  tr").each(function(){
+      sub =  $(this).find(".subtotal").html();
+      subtotal = parseFloat(sub);
+      if(sub!=undefined){
+        total += subtotal;
+      }               
+    });
+    $("#total").html(total);
+}
 
-    //   //SAVE items in localStorage
-    //   localStorage.setItem('articlesToBuy', JSON.stringify(articlesToBuy));
-    //   //Change Tab
-    //   $('#myTab li:eq(1) a').tab('show');
-  });
+//#############################################################################
 
 
-  /************************************************************************************/  
-  /*****************************  LLAMADAS AJAX ***************************************/  
-  /************************************************************************************/
+$(document).ready(function(){
+    if(localStorage.getItem('data')!=null || localStorage.getItem('data')!=undefined || localStorage.getItem('data')!=""){
+        data = JSON.parse(localStorage.getItem('data'));
+    }
 
-    var navListItems = $('ul.setup-panel li a'),
-        allWells = $('.setup-content');
+    Conekta.setPublishableKey('key_LUYetCR5VpoHknb8');
 
-    allWells.hide();
-
-    navListItems.click(function(e)
-    {
-        e.preventDefault();
-        var $target = $($(this).attr('href')),
-            $item = $(this).closest('li');
-        
-        if (!$item.hasClass('disabled')) {
-            navListItems.closest('li').removeClass('active');
-            $item.addClass('active');
-            allWells.hide();
-            $target.show();
+    //Get article list of the JSON saved in LocalStorage
+    if(localStorage.getItem('data')!=null && localStorage.getItem('data')!= ""){
+        $('table').show();
+        $("#error").hide();
+        //Transform the String generated through JSON.stringify and saved in localStorage in JSON object again
+        var restoredData = JSON.parse(localStorage.getItem('data'));
+        //Fill the Table
+        for (var i=0; i < restoredData.articles.length; i++) {
+            if(restoredData.articles[i] != null && restoredData.articles[i] != ""){
+              $("#table-body").append(
+                    "<tr id='row_"+i+"'>"
+                  + "<td class=id>" + restoredData.articles[i].id + "</td>"
+                  + "<td><span class=name><b>" + restoredData.articles[i].name + "<b></span></td>"
+                  + "<td><span class=price>" + restoredData.articles[i].price + "</span></td>"
+                  + "<td><span class=quantity>" + restoredData.articles[i].quantity +"</span></td>"
+                  + "<td>"
+                  +   "<img id='img_less_"+restoredData.articles[i].id+"' src='/images/less.png' style='cursor: pointer;' onclick='lessFunction(this)'>"
+                  +   "<img id='img_more_"+restoredData.articles[i].id+"' src='/images/more.png' style='cursor: pointer;' onclick='moreFunction(this)'>"
+                  + "</td>"
+                  + "<td><span class=subtotal>" + parseFloat(restoredData.articles[i].price) * parseInt(restoredData.articles[i].quantity) + "</span></td>"
+                  + "<td><img src='/images/item-remove.png' class='img-remove' id=button_article_"+restoredData.articles[i].id+" style='width:20px; cursor: pointer;' onclick=removeItem(this)></td>"
+                  + "<tr>"
+              );
+            }       
         }
-    });
+      
+        //Trigger the Function
+        calculateTotal();
+
+      }else{
+            $("#error").show();
+            $('table').hide();
+      }//end if
+
+      /************************************************************************************/  
+      /*****************************  LLAMADAS AJAX ***************************************/  
+      /************************************************************************************/
+
+      var navListItems = $('ul.setup-panel li a'),
+          allWells = $('.setup-content');
+
+      allWells.hide();
+
+      navListItems.click(function(e)
+      {
+          e.preventDefault();
+          var $target = $($(this).attr('href')),
+              $item = $(this).closest('li');
+          
+          if (!$item.hasClass('disabled')) {
+              navListItems.closest('li').removeClass('active');
+              $item.addClass('active');
+              allWells.hide();
+              $target.show();
+          }
+      });
     
-    $('ul.setup-panel li.active a').trigger('click');
-    
-    // DEMO ONLY //
-    $('#activate-step-2').on('click', function(e) {
-        saveArticlesToBuy();
+      $('ul.setup-panel li.active a').trigger('click');
+      
+      // DEMO ONLY //
+      $('#activate-step-2').on('click', function(e) {
+          saveArticlesToBuy();
 
-        $('ul.setup-panel li:eq(1)').removeClass('disabled');
-        $('ul.setup-panel li a[href="#step-2"]').trigger('click');
-        $('#step-2').show();
-    });
+          $('ul.setup-panel li:eq(1)').removeClass('disabled');
+          $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+          $('#step-2').show();
+      });
 
-        // DEMO ONLY //
-    $('#activate-step-3').on('click', function(e) {
-        $('ul.setup-panel li:eq(2)').removeClass('disabled');
-        $('ul.setup-panel li a[href="#step-3"]').trigger('click');
-        $(this).remove();
-    });
+          // DEMO ONLY //
+      $('#activate-step-3').on('click', function(e) {
+          $('ul.setup-panel li:eq(2)').removeClass('disabled');
+          $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+          $(this).remove();
+      });
 
 
-        $("#activate-step-2").click(function(){
+      $("#activate-step-2").click(function(){
             /*************************** Get User Data *****************/
              var id = $("#hdn_user").val();
               $.ajax({
@@ -318,36 +299,36 @@ $(document).ready(function(){
               } else {   
                 $("#address").modal('show');
               }     
+      });
+
+      $("#address_form").submit(function(e) {
+          e.preventDefault();
+          var actionurl = e.currentTarget.action;
+           $.ajax({
+                  url: actionurl,
+                  type: 'post',
+                  dataType: 'json',
+                  data: $("#address_form").serialize(),
+                  success: function(data) {
+                      if(data.createdAt){
+                        $("#user-address").val($("#street").val());
+                        $("#address").modal('hide');
+                      }
+                  }
             });
+       });
 
-        $("#address_form").submit(function(e) {
-            e.preventDefault();
-            var actionurl = e.currentTarget.action;
-             $.ajax({
-                    url: actionurl,
-                    type: 'post',
-                    dataType: 'json',
-                    data: $("#address_form").serialize(),
-                    success: function(data) {
-                        if(data.createdAt){
-                          $("#user-address").val($("#street").val());
-                          $("#address").modal('hide');
-                        }
-                    }
-              });
-         });
-
-         var usuario;
-         $("#user_form").submit(function(e){
-            e.preventDefault();
-            usuario = $("#user_form").serialize();
-            $('ul.setup-panel li:eq(2)').removeClass('disabled');
-            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
-            $('#step-3').show();
-         });
+       var usuario;
+       $("#user_form").submit(function(e){
+          e.preventDefault();
+          usuario = $("#user_form").serialize();
+          $('ul.setup-panel li:eq(2)').removeClass('disabled');
+          $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+          $('#step-3').show();
+       });
 
 
-         $("#payment_form").submit(function(e){
+       $("#payment_form").submit(function(e){
             $('.backdrop_graph').show();
             e.preventDefault();
             Conekta.charge.create({
@@ -371,110 +352,34 @@ $(document).ready(function(){
                 }
               }
             }, conektaSuccessResponseHandler, conektaErrorResponseHandler);
-         })
+       });
 
-
-        function conektaSuccessResponseHandler(response) {
-            $('.backdrop_graph').hide();
-            $(".payment-errors").empty();
-            $.ajax({
-              url: '/order/create',
-              type: 'post',
-              dataType: 'json',
-              data: JSON.parse(localStorage.getItem('articlesToBuy')),
-              success: function(data) {
-                alert("hola");
-              }
-            });
-        }
-
-        function conektaErrorResponseHandler(response) {
+      function conektaSuccessResponseHandler(response) {
           $('.backdrop_graph').hide();
-          console.log(response);
-          $(".payment-errors").text(response.message);
+          $(".payment-errors").empty();
           $.ajax({
-              url: '/order/create',
-              type: 'post',
-              dataType: 'json',
-              data: JSON.parse(localStorage.getItem('articlesToBuy')),
-              success: function(data) {
-                alert("hola");
-              }
-            });
-        }
+            url: '/order/create',
+            type: 'post',
+            dataType: 'json',
+            data: JSON.parse(localStorage.getItem('articlesToBuy')),
+            success: function(data) {
+              alert("hola");
+            }
+          });
+      }
 
-    
+      function conektaErrorResponseHandler(response) {
+        $('.backdrop_graph').hide();
+        console.log(response);
+        $(".payment-errors").text(response.message);
+        $.ajax({
+            url: '/order/create',
+            type: 'post',
+            dataType: 'json',
+            data: JSON.parse(localStorage.getItem('articlesToBuy')),
+            success: function(data) {
+              alert("hola");
+            }
+          });
+      }    
 });
-
-  function lessFunction(elemento){
-    var id = elemento.id;
-    //Get the row index; #optional
-    var row = $("#" + id).parent().parent().attr("id");
-    //Get the quantity
-    var actual_quantity = $("#" + row).find(".quantity").html();
-    if(parseFloat(actual_quantity) > 1){
-      //Parse
-      var resultado = parseFloat(actual_quantity) - 1;
-      //Show new quantity
-      $("#" + row).find(".quantity").html(resultado);
-      //Show new subtotal
-      var actual_price = $("#" + row).find(".price").html();
-      var subtotal = resultado * parseInt(actual_price);
-      $("#" + row).find(".subtotal").html(subtotal);
-      //Total refresh
-      calculateTotal();
-
-      saveArticlesToBuy();
-    }       
-  }
-
-  function moreFunction(elemento){        
-    var id = elemento.id;
-    //Get the row index; #optional
-    var row = $("#" + id).parent().parent().attr("id");
-    //Get the quantity
-    var actual_quantity = $("#" + row).find(".quantity").html();
-    //Parse
-    var resultado = parseFloat(actual_quantity) + 1;
-    //Show new quantity
-    $("#" + row).find(".quantity").html(resultado);
-    //Show new subtotal
-    var actual_price = $("#" + row).find(".price").html();
-    var subtotal = resultado * parseInt(actual_price);
-    $("#" + row).find(".subtotal").html(subtotal);
-    //Total refresh
-    calculateTotal();
-
-    saveArticlesToBuy();
-  }
-
-  /***************  Functions ******************/     
-  function calculateTotal(){
-    var total = 0.00;
-    var subtotal = 0.00;
-
-    $("#table-body  tr").each(function(){
-      sub =  $(this).find(".subtotal").html();
-      subtotal = parseFloat(sub);
-      if(sub!=undefined){
-        total += subtotal;
-      }               
-    });
-    $("#total").html(total);
-  }
-
-
-  /***************  Events ******************/
-  function removeItem(elem){
-    var id = elem.id;
-    //Get the row index; #optional
-    var row_index = $("#" + id).parent().parent().attr("id");
-    row_index = row_index.substring(4);
-    delete restoredData.articles[row_index];
-    //Update LocalStorage variable; #optional
-    localStorage.setItem('data', JSON.stringify(restoredData));
-    //Remove the ROW        
-    $("#" + id).parent().parent().remove();
-    //Reload the page
-    location.reload();
-  }
