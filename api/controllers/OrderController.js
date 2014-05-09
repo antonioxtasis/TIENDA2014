@@ -17,6 +17,9 @@
 
 module.exports = {
 
+  index: function(req, res, next){
+    res.view(); 
+  },
   create: function(req, res, next){
 
     var ordenObject = {
@@ -54,7 +57,9 @@ module.exports = {
         }
 
         Orden.update(order_id, ordenObject, function (err) {
-          console.log(err);
+          if(!err){
+            res.json("bien");
+          }
         });
 
       }

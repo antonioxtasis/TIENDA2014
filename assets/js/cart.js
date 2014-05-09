@@ -334,7 +334,7 @@ $(document).ready(function(){
             Conekta.charge.create({
               amount: 100000,
               currency: 'MXN',
-              description: 'Latest E-Zine',
+              description: 'Compra Tienda En Línea',
               card: {
                 name: $('#cardname').val(),
                 cvc: $('#cvc').val(),
@@ -363,7 +363,12 @@ $(document).ready(function(){
             dataType: 'json',
             data: JSON.parse(localStorage.getItem('articlesToBuy')),
             success: function(data) {
-              alert("hola");
+              if(data == "bien") {
+                $('ul.setup-panel li:eq(3)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-4"]').trigger('click');
+                $('#step-4').show();
+                localStorage.clear();
+              }
             }
           });
       }
@@ -372,14 +377,5 @@ $(document).ready(function(){
         $('.backdrop_graph').hide();
         console.log(response);
         $(".payment-errors").text(response.message);
-        $.ajax({
-            url: '/order/create',
-            type: 'post',
-            dataType: 'json',
-            data: JSON.parse(localStorage.getItem('articlesToBuy')),
-            success: function(data) {
-              alert("hola");
-            }
-          });
       }    
 });

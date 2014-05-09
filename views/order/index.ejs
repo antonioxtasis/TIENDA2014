@@ -1,2 +1,87 @@
-<br><br><br><br>
-felicidades
+<div style="margin-top:30px" class="container">
+	
+    <div class="backdrop_graph" style="display:none">
+        <p>Procesando Pago...</p>
+    </div>
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li class="active"><a href="#step-1">
+                    <h4 class="list-group-item-heading">Step 1</h4>
+                    <p class="list-group-item-text">Product Description</p>
+                </a></li>
+                <li class="disabled"><a href="#step-2">
+                    <h4 class="list-group-item-heading">Step 2</h4>
+                    <p class="list-group-item-text">Billing Address</p>
+                </a></li>
+                <li class="disabled"><a href="#step-3">
+                    <h4 class="list-group-item-heading">Step 3</h4>
+                    <p class="list-group-item-text">Payment</p>
+                </a></li>
+                <li class="disabled"><a href="#step-3">
+                    <h4 class="list-group-item-heading">Step 4</h4>
+                    <p class="list-group-item-text">Finish</p>
+                </a></li>
+                <li class="disabled"><a href="#step-4">
+                    <h4 class="list-group-item-heading">Step 4</h4>
+                    <p class="list-group-item-text">Finish</p>
+                </a></li>
+            </ul>
+        </div>
+	</div>
+
+
+    <div class="row setup-content" id="step-1">
+        <div class="col-xs-12">
+            <div class="col-md-10 text-center col-md-offset-1">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <div class="row">
+                                        <h4>Finished Order</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <table class="table" style="margin: 0px auto;display:none" border="0">
+                                        <thead >
+                                            <th class="text-center">ID</th>
+                                            <th class="text-center">Article</th>
+                                            <th class="text-center">Unit Price</th>
+                                            <th class="text-center">Quantity</th>
+                                            <th class="text-center"></th>
+                                            <th class="text-center">Subtotal</th>
+                                            <th class="text-center"></th>
+                                        </thead>
+                                        <tbody id="table-body">
+                                                <!-- Render here -->
+                                        </tbody>
+                                    </table>
+                                    <h3 id="error">No Data To Display</h3>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row text-center">
+                                    <div class="col-xs-10">
+                                        <h4 id="div-total" class="text-right">Total <strong>$</strong><strong id="total">0</strong></h4>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button id="activate-step-2" class="btn btn-success btn-lg">Checkout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </br></br>
+                    </br></br>
+            </div>
+        </div>
+    </div>
+
+
+
+  
