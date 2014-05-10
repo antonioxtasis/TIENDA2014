@@ -4,25 +4,25 @@
 			<h2 class="form-signing-heading">Create an account</h2>
 			
 			<div class="control-group">
-				<input type="text" class="form-control" placeholder="first name" name="first_name">
+				<input type="text" class="form-control" placeholder="first name" name="first_name"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="text" class="form-control" placeholder="last name" name="last_name">
+				<input type="text" class="form-control" placeholder="last name" name="last_name"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="text" class="form-control" placeholder="title" name="title">
+				<input type="text" class="form-control" placeholder="title" name="title"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="text" class="form-control" placeholder="email" name="email">
+				<input type="text" class="form-control" placeholder="email" name="email"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="text" class="form-control" placeholder="phone" name="phone">
+				<input type="text" class="form-control" placeholder="phone" name="phone"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="password" class="form-control" placeholder="password" name="encryptedPassword">
+				<input type="password" class="form-control" placeholder="password" name="encryptedPassword"><span></span>
 			</div>
 			<div class="control-group">
-				<input type="password" class="form-control" placeholder="password confirmation" name="confirmation">
+				<input type="password" class="form-control" placeholder="password confirmation" name="confirmation"><span></span>
 			</div>
 			<br>
 			<input type="submit" class="btn btn-lg btn-block btn-primary" Value="Create Account"/>
@@ -30,3 +30,55 @@
 		</form>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$("input[name=first_name]").keyup(function(){
+			if($(this).val().length < 3){
+				$(this).siblings('span').html("Invalid");
+			}
+			if($(this).val().length >= 3){
+				$(this).siblings('span').html("Valid");
+			}
+		});
+
+		$("input[name=last_name]").keyup(function(){
+			if($(this).val().length < 3){
+				$(this).siblings('span').html("Invalid");
+			}
+			if($(this).val().length >= 3){
+				$(this).siblings('span').html("Valid");
+			}
+		});
+
+		$("input[name=title]").keyup(function(){
+			if($(this).val().length < 3){
+				$(this).siblings('span').html("Invalid");
+			}
+			if($(this).val().length >= 3){
+				$(this).siblings('span').html("Valid");
+			}
+		});
+
+		$("input[name=phone]").keyup(function(){
+			if($(this).val().length < 8){
+				$(this).siblings('span').html("Invalid");
+			}
+			if($(this).val().length >= 8){
+				$(this).siblings('span').html("Valid");
+			}
+		});
+
+		$("input[type=submit]").mouseover(function(){
+			if(
+				$("input[name=first_name]").siblings('span').html() != "Valid"
+				|| $("input[name=last_name]").siblings('span').html() != "Valid"
+				|| $("input[name=title]").siblings('span').html() != "Valid"
+				|| $("input[name=phone]").siblings('span').html() != "Valid"
+			){
+				alert("Complete your personal information");
+			}
+		});
+	});
+</script>

@@ -5,6 +5,7 @@ module.exports = function (req, res, ok) {
 
   // User is allowed, proceed to controller
   if (req.session.User && req.session.User.admin) {
+    console.log("message admin pol");
     return ok();
   }
 
