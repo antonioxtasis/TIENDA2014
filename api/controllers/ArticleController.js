@@ -1,6 +1,8 @@
 /*
  * ArticleController
  */
+var uuid = require('node-uuid');
+var fs = require('fs');
 
 module.exports = {
 
@@ -20,33 +22,38 @@ module.exports = {
     });
   }, 
 
-  create: function(req, res, next) {
+  create: function(req, res, next) {  
+    console.log(req.files);
 
-    var articleObject = {
-      name: req.param('name'),
-      price: req.param('price'),
-      active: req.param('active'),
-      quantity: req.param('quantity'),
-      imageURL: req.param('imageURL'),
-      description: req.param('description')
-    }
+    fs.readFile(req.files.imageURL2.path, function (err, data) {
+      var randomstring = require("randomstring");
+      var random = randomstring.generate();
+      var name = req.files.imageURL2.name.split(".");
+      var newPath = "/Users/javieret/src/TIENDA2014/assets/images/"+random+"."+name[1];
+      fs.writeFile(newPath, data, function (err) {
+        var articleObject = {
+          name: req.param('name'),
+          price: req.param('price'),
+          active: req.param('active'),
+          quantity: req.param('quantity'),
+          imageURL: "/images/"+random+"."+name[1],
+          description: req.param('description')
+        }
+          // Create a Article with the params sent from the --> new.ejs
+          Article.create(articleObject, function articleCreated(err, article) {
+            if (err) {
+              console.log(err);
+              // If error redirect back
+              //return res.redirect('/article/new');
+            }else{
+              res.redirect('/article/');
+            }
 
-    // Create a Article with the params sent from the --> new.ejs
-    Article.create(articleObject, function articleCreated(err, article) {
 
-      if (err) {
-        console.log(err);
-        // If error redirect back
-        //return res.redirect('/article/new');
-      }
+          });
 
-      article.save(function(err, article) {
-        if (err) return next(err);
-
-        res.redirect('/article/');
       });
     });
-
   },
 
   getArticleByCategoryId: function(req, res, next){
